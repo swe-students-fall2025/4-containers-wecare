@@ -47,4 +47,28 @@ def delete_chat(chat_id):
 
 
 
+@chat_router.post('/<chat_id>/message')
+def send_message(chat_id):
+    chat_data = request.json
+    chat_data['_id'] = str(uuid4())
+    inserted_id = chat_dal.insert_one_chat(chat_data)
+    messages_for_model = [
+        {"role": "user", "content": chat_data["content"]} #this is important because the way we structure the JS has to save message data as content
+            
+    ]
+    assistant_reply = ask_model(messages_for_model)
+    chat_data_2 = {
+        "_id": str(uuid4()),
+        "role": "assistant",
+        "content": assistant_reply,
+    }
+    inserted_id_2 = chat_dal.insert_one_chat(chat_data_2)
+    if inserted_id and inserted_id_2:
+        return jsonify({"chat": "chat deleted successfully"}), 200
+        
+        
+    return jsonify({"error": "Failed to create chat"}), 500
+
+
+
 
