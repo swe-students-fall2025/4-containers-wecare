@@ -14,7 +14,7 @@ def create_message():
     return jsonify({"error": "Failed to create message"}), 500
 
 @messages_router.get('/<message_id>')
-def get_bid(message_id):
+def get_message(message_id):
     if not message_id:
         return jsonify({"error": "message_id query parameter is required"}), 400
     message = messages_dal.find_one_message({"_id": message_id})
@@ -22,9 +22,16 @@ def get_bid(message_id):
         return jsonify(message), 200
     return jsonify({"error": "Message not found"}), 404
 
+@messages_router.get('/')
+def get_all_messages():
+    message = messages_dal.find_all_messages()
+    if message:
+        return jsonify(message), 200
+    return jsonify({"error": "Messages not found"}), 404
+
 
 @messages_router.put('/<message_id>')
-def update_bid(message_id):
+def update_message(message_id):
     update_data = request.json
     success = messages_dal.update_one_message({"_id": message_id}, update_data)
     if success:
@@ -32,7 +39,7 @@ def update_bid(message_id):
     return jsonify({"error": "Failed to update message"}), 500
 
 @messages_router.delete('/<message_id>')
-def delete_bid(message_id):
+def delete_message(message_id):
     success = messages_dal.delete_one_message({"_id": message_id})
     if success:
         return jsonify({"message": "Message deleted successfully"}), 200
