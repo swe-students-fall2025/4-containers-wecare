@@ -8,6 +8,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    env:
+      - .env
     volumes: 
       - mongo_data:/data/db
     
@@ -21,6 +23,19 @@ services:
       - "5050:5050"
     environment:
       MONGO_URI: "mongodb://root:example@mongodb:27017/"
+    
+  chat-client:
+    build: .
+    container_name: chat-client
+    env_file:
+      - .env
+    environment:
+      - MODEL_NAME=${MODEL_NAME}
+      - MODEL_DEVICE=${MODEL_DEVICE}
+      - MODEL_MAX_NEW_TOKENS=${MODEL_MAX_NEW_TOKENS}
+      - MODEL_TEMPERATURE=${MODEL_TEMPERATURE}
+    command: ["python", "chat_client.py"]
+
 
 volumes:
   mongo_data:

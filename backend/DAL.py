@@ -9,15 +9,15 @@ from pymongo.server_api import ServerApi
 # Load environment variables from .env
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../.env"))
 
-MONGODB_CONNECTION = os.getenv("DATABASE_CONNECTION")
-DB_NAME = os.getenv("DB_NAME")
+MONGODB_CONNECTION = os.getenv("MONGO_URI")
+DB_NAME = os.getenv("MONGO_DB")
 
 if not MONGODB_CONNECTION or not DB_NAME:
     raise RuntimeError(
         "DATABASE_CONNECTION and DB_NAME must be set in the .env file"
     )
 
-client = MongoClient(MONGODB_CONNECTION, server_api=ServerApi("1"))
+client = MongoClient(MONGODB_CONNECTION)
 client.admin.command("ping")
 db = client.get_database(DB_NAME)
 
