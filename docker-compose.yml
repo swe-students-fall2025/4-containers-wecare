@@ -1,0 +1,26 @@
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes: 
+      - mongo_data:/data/db
+    
+  
+  machine-learning-client:
+    build:
+      context: ./machine-learning-client
+    volumes:
+      - ./machine-learning-client:/app
+    ports:
+      - "5050:5050"
+    environment:
+      MONGO_URI: "mongodb://root:example@mongodb:27017/"
+
+volumes:
+  mongo_data:
