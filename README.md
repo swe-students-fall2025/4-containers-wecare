@@ -18,7 +18,7 @@ Build a containerized app that uses machine learning. See [instructions](./instr
 
 ## Task Board
 
-[As projects here](https://github.com/orgs/swe-students-fall2025/projects/96/views/1)
+[As the project here](https://github.com/orgs/swe-students-fall2025/projects/96/views/1)
 
 ## Configuration
 
@@ -28,11 +28,10 @@ Build a containerized app that uses machine learning. See [instructions](./instr
 
 ### Environment Variables:
 
- Copy the `env.example` file to `.env` in the project root directory and fill in the required values. The example file contains all necessary environment variables with placeholder values that you should replace with your actual configuration.
+Download .env file sent in the group discord.
 
 ### Running the Application:
-
- From the project root directory, run `docker-compose up --build` to build and start all containers. [INSERT MORE LATER]
+From the project root directory, run `docker-compose up --build` to build and start all containers. [INSERT MORE LATER]
 
 ### Database Setup:
 

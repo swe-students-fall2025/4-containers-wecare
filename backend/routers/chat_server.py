@@ -2,11 +2,11 @@ from flask import Blueprint, request, jsonify
 from uuid import uuid4
 
 from backend.DAL import chat_dal
-chat_router = Blueprint('chats', __name__, url_prefix='/chats/api')
 
-def ask_model(prompt: str) -> str:
-    """Placeholder function so tests can monkeypatch it."""
-    return "placeholder"
+#for testing purposes
+from backend.routers.model_client import ask_model
+
+chat_router = Blueprint('chats', __name__, url_prefix='/chats/api')
 
 @chat_router.post('')
 def create_chat():
@@ -68,7 +68,9 @@ def send_message(chat_id):
     }
     inserted_id_2 = chat_dal.insert_one_chat(chat_data_2)
     if inserted_id and inserted_id_2:
-        return jsonify({"chat": "chat deleted successfully"}), 200
+
+        # return jsonify({"chat": "chat deleted successfully"}), 200
+        return jsonify({"assistant_response": assistant_reply}), 200
         
         
     return jsonify({"error": "Failed to create chat"}), 500
