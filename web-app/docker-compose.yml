@@ -1,0 +1,29 @@
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    env_file:
+      - ../.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_data:/data/db
+
+  chat-client:
+    build:
+      context: ..
+      dockerfile: web-app/Dockerfile
+    container_name: chat-client
+    env_file:
+      - ../.env
+    working_dir: /app/web-app
+    ports:
+      - "5050:5050"     
+    command: ["python", "app.py"]  
+
+volumes:
+  mongo_data:
