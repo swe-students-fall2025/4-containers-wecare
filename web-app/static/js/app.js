@@ -63,7 +63,7 @@ async function createNewChat() {
             body: JSON.stringify({
                 title: 'New Conversation',
                 created_at: new Date().toISOString(),
-                messages: []
+                messages: []        // extra but harmless
             })
         });
 
@@ -79,6 +79,7 @@ async function createNewChat() {
     }
 }
 
+
 async function loadChatHistory() {
     try {
         const response = await fetch(API_BASE + '/');
@@ -90,6 +91,7 @@ async function loadChatHistory() {
         console.error('Error loading chats:', error);
     }
 }
+
 
 function displayChatList(chats) {
     chatList.innerHTML = '';
@@ -123,19 +125,29 @@ function displayChatList(chats) {
 
 async function loadChat(chatId) {
     try {
-        const response = await fetch(`${API_BASE}/${chatId}`);
-        if (response.ok) {
-            const chat = await response.json();
-            currentChatId = chatId;
-            displayMessages(chat.messages || []);
-            showChatArea();
-            loadChatHistory(); // Refresh to update active state
+        const [chatRes, messagesRes] = await Promise.all([
+            fetch(`${API_BASE}/${chatId}`),
+            fetch(`${MESSAGES_API}/${chatId}`)
+        ]);
+
+        if (!chatRes.ok) {
+            showNotification('Failed to load chat', 'error');
+            return;
         }
+
+        const chat = await chatRes.json();
+        const messages = messagesRes.ok ? await messagesRes.json() : [];
+
+        currentChatId = chatId;
+        displayMessages(messages);
+        showChatArea();
+        loadChatHistory(); // Refresh to update active state
     } catch (error) {
         console.error('Error loading chat:', error);
         showNotification('Failed to load chat', 'error');
     }
 }
+
 
 // Message Display
 function displayMessages(messages) {
@@ -232,11 +244,13 @@ async function transcribeAudio(audioBlob) {
 // Text Message Functions
 async function sendTextMessage() {
     const message = textInput.value.trim();
+    console.log(message);
     if (!message) return;
 
     textInput.value = '';
     await sendMessage(message);
 }
+
 
 async function sendMessage(content) {
     // Create chat if needed
@@ -247,20 +261,21 @@ async function sendMessage(content) {
 
     showChatArea();
 
-    // Display user message immediately
     const userMessage = {
+        chat_id: currentChatId,               // used by backend/DAL
         role: 'user',
-        content: content,
+        content: content,                     // used by ask_model()
         timestamp: new Date().toISOString()
     };
+
+    // Display user message immediately in UI
     addMessageToUI(userMessage);
 
     // Show typing indicator
     showTypingIndicator();
 
     try {
-        // Send message to backend
-        const response = await fetch(`${API_BASE}/${currentChatId}/message`, {
+        const response = await fetch(`${MESSAGES_API}/send/${currentChatId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userMessage)
@@ -269,8 +284,7 @@ async function sendMessage(content) {
         removeTypingIndicator();
 
         if (response.ok) {
-            // The backend should return the assistant's response
-            // For now, we'll fetch the updated chat
+            // Reload chat to show both user + assistant messages
             await loadChat(currentChatId);
         } else {
             throw new Error('Failed to send message');
@@ -281,6 +295,8 @@ async function sendMessage(content) {
         showNotification('Failed to send message. Please try again.', 'error');
     }
 }
+
+
 
 // UI Helper Functions
 function showChatArea() {

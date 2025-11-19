@@ -9,22 +9,24 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy Pipfile and Pipfile.lock
-COPY web-app/Pipfile web-app/Pipfile.lock ./
+# Install Python dependencies directly
+RUN pip install --no-cache-dir \
+    flask \
+    flask-cors \
+    pymongo \
+    python-dotenv \
+    requests \
+    transformers \
+    torch
 
-# Install pipenv and dependencies
-RUN pip install --no-cache-dir pipenv && \
-    pipenv install --deploy --system
-
-# Copy application code
+# Copy application code (entire repo, since build context is ..)
 COPY . .
 
 # Expose port
 EXPOSE 5050
 
-# Set environment variables
-ENV FLASK_APP=app.py
+# No need to set FLASK_APP here since we're using python directly
 ENV PYTHONUNBUFFERED=1
 
-# Run the application
-CMD ["python", "app.py"]
+# Default command (will be overridden by docker-compose)
+CMD ["python", "web-app/app.py"]
