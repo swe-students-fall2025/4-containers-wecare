@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy Pipfile and Pipfile.lock
-COPY Pipfile Pipfile.lock ./
+COPY web-app/Pipfile web-app/Pipfile.lock ./
 
 # Install pipenv and dependencies
 RUN pip install --no-cache-dir pipenv && \
@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir pipenv && \
 COPY . .
 
 # Expose port
-EXPOSE 5000
+EXPOSE 5050
 
 # Set environment variables
 ENV FLASK_APP=app.py
