@@ -17,6 +17,7 @@ pytest = "*"
 pytest-flask = "*"
 black = "*"
 pylint = "*"
+tomli = "*"
 coverage = "*"
 
 [requires]
