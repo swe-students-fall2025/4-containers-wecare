@@ -20,10 +20,15 @@ services:
     container_name: chat-client
     env_file:
       - ../.env
-    working_dir: /app/web-app
     ports:
-      - "5050:5050"     
-    command: ["python", "app.py"]  
+      - "5050:5050"
+    environment:
+      MODEL_NAME: llama3.2
+      OLLAMA_URL: http://host.docker.internal:11434/api/chat
+    depends_on:
+      - mongo
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   mongo_data:

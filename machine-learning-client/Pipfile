@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pylint = "*"
+tomli = "*"
 black = "*"
 
 [dev-packages]

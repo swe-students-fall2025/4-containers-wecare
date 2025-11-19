@@ -22,20 +22,13 @@ Build a containerized app that uses machine learning. See [instructions](./instr
 
 ## Configuration
 
-### Prerequisites:
+**Prerequisites:** 
+
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
  Install Docker and Docker Compose on your system. Docker Desktop works on macOS and Windows and Linux users can install Docker Engine and Docker Compose via their package manager.
 
 ### Environment Variables:
 
-Download .env file sent in the group discord.
-
-### Running the Application:
-From the project root directory, run `docker-compose up --build` to build and start all containers. [INSERT MORE LATER]
-
-### Database Setup:
-
- MongoDB is automatically configured in docker-compose.yml with username `root`, password `example`, and a persistent volume for data storage. No additional setup is required as the database initializes automatically on first run.
-
-### Stopping the Application:
- Run `docker-compose down` to stop all containers.
+**Stopping the Application:** Run `docker-compose down` to stop all containers.

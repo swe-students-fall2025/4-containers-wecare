@@ -8,12 +8,16 @@ flask = "*"
 flask-cors = "*"
 pymongo = "*"
 python-dotenv = "*"
+requests = "*"
+transformers = "*"
+torch = "*"
 
 [dev-packages]
 pytest = "*"
 pytest-flask = "*"
 black = "*"
 pylint = "*"
+tomli = "*"
 coverage = "*"
 
 [requires]
