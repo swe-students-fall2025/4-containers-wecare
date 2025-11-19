@@ -8,6 +8,9 @@ flask = "*"
 flask-cors = "*"
 pymongo = "*"
 python-dotenv = "*"
+requests = "*"
+transformers = "*"
+torch = "*"
 
 [dev-packages]
 pytest = "*"

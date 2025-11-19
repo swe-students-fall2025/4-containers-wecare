@@ -79,6 +79,7 @@ async function createNewChat() {
   }
 }
 
+
 async function loadChatHistory() {
   try {
     const response = await fetch(API_BASE + "/");
@@ -90,6 +91,7 @@ async function loadChatHistory() {
     console.error("Error loading chats:", error);
   }
 }
+
 
 function displayChatList(chats) {
   chatList.innerHTML = "";
@@ -140,6 +142,7 @@ async function loadChat(chatId) {
   }
 }
 
+
 // Message Display
 function displayMessages(messages) {
   messagesContainer.innerHTML = "";
@@ -177,7 +180,8 @@ async function startRecording() {
   if (isRecording) return;
 
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const stream = await navigator.mediaDevices.getUserMedia({ 
+      : true });
     mediaRecorder = new MediaRecorder(stream);
     audioChunks = [];
 
@@ -253,6 +257,7 @@ async function sendTextMessage() {
   await sendMessage(message);
 }
 
+
 async function sendMessage(content) {
   // Create chat if needed
   if (!currentChatId) {
@@ -296,6 +301,8 @@ async function sendMessage(content) {
     showNotification("Failed to send message. Please try again.", "error");
   }
 }
+
+
 
 // UI Helper Functions
 function showChatArea() {
