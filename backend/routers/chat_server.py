@@ -4,6 +4,10 @@ from uuid import uuid4
 from backend.DAL import chat_dal
 chat_router = Blueprint('chats', __name__, url_prefix='/chats/api')
 
+def ask_model(prompt: str) -> str:
+    """Placeholder function so tests can monkeypatch it."""
+    return "placeholder"
+
 @chat_router.post('')
 def create_chat():
     chat_data = request.json

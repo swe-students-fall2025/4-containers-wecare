@@ -6,20 +6,52 @@ from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 from pymongo.server_api import ServerApi
 
-# Load environment variables from .env
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../.env"))
+# # Load environment variables from .env
+# load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../.env"))
 
-MONGODB_CONNECTION = os.getenv("MONGO_URI")
-DB_NAME = os.getenv("MONGO_DB")
+# MONGODB_CONNECTION = os.getenv("MONGO_URI")
+# DB_NAME = os.getenv("MONGO_DB")
 
-if not MONGODB_CONNECTION or not DB_NAME:
-    raise RuntimeError(
-        "DATABASE_CONNECTION and DB_NAME must be set in the .env file"
-    )
+# if not MONGODB_CONNECTION or not DB_NAME:
+#     raise RuntimeError(
+#         "DATABASE_CONNECTION and DB_NAME must be set in the .env file"
+#     )
 
-client = MongoClient(MONGODB_CONNECTION)
-client.admin.command("ping")
-db = client.get_database(DB_NAME)
+# # client = MongoClient(MONGODB_CONNECTION)
+# # client.admin.command("ping")
+# # db = client.get_database(DB_NAME)
+# if DATABASE_CONNECTION == "mock":
+#     db = None
+# else:
+#     client = MongoClient(DATABASE_CONNECTION)
+#     client.admin.command("ping")
+#     db = client[DB_NAME]
+
+
+DATABASE_CONNECTION = os.getenv("DATABASE_CONNECTION")
+DB_NAME = os.getenv("DB_NAME")
+
+# 🟢 During tests, conftest.py sets DATABASE_CONNECTION = "mock"
+# so we skip real DB setup entirely
+if DATABASE_CONNECTION == "mock":
+    db = None
+
+else:
+    # Normal runtime: still require env vars
+    if not DATABASE_CONNECTION or not DB_NAME:
+        raise RuntimeError(
+            "DATABASE_CONNECTION and DB_NAME must be set in the .env file"
+        )
+
+    # Try DB setup
+    client = MongoClient(DATABASE_CONNECTION, serverSelectionTimeoutMS=1000)
+
+    try:
+        client.admin.command("ping")
+    except Exception as e:
+        raise RuntimeError(f"Could not connect to MongoDB: {e}")
+
+    db = client[DB_NAME]
 
 
 # Chats: one document per conversation
