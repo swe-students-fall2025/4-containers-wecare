@@ -1,7 +1,7 @@
 import os
 from typing import Any, Dict, List, Optional
 
-#see if we are in testing mode
+# see if we are in testing mode
 TESTING = os.environ.get("TESTING") == "1"
 
 if TESTING:
@@ -28,7 +28,6 @@ else:
     client = MongoClient(MONGODB_CONNECTION)
     client.admin.command("ping")
     db = client.get_database(DB_NAME)
-
 
     # Chats: one document per conversation
     class chat_dal:
@@ -76,7 +75,6 @@ else:
             except PyMongoError as e:
                 print(f"Error deleting chat: {e}")
                 return False
-
 
     # Messages: one document per message in a chat
     # can store audio URL, transcript, sender, bot answer, etc

@@ -1,10 +1,18 @@
-import os
+"""
+Conftest module to set up test environment and mock backend components.
+"""
+
+import sys, os
 import pytest
 
-#` Set environment variables for testing`
+# Set environment variables for testing
 os.environ["TESTING"] = "1"
 os.environ["MONGO_URI"] = "fake"
 os.environ["MONGO_DB"] = "fake"
+
+# Add machine-learning-client/ to Python path
+sys.path.append(os.path.abspath("./machine-learning-client"))
+
 
 from tests.fake_backend import FakeDB, fake_ask_model
 import backend.DAL as DAL
@@ -16,7 +24,9 @@ FAKE_DB = FakeDB()
 
 @pytest.fixture(autouse=True)
 def mock_backend(monkeypatch, request):
-
+    """
+    Fixture to mock backend components for testing.
+    """
     FAKE_DB.reset()
 
     monkeypatch.setattr(fake_DAL, "db", FAKE_DB)
@@ -41,7 +51,7 @@ def mock_backend(monkeypatch, request):
         monkeypatch.setattr(
             fake_DAL.chat_dal,
             "find_all_chats",
-            lambda: [{"_id": "dummy", "text": "placeholder"}]
+            lambda: [{"_id": "dummy", "text": "placeholder"}],
         )
 
     return FAKE_DB

@@ -3,21 +3,23 @@ from uuid import uuid4
 
 from backend.DAL import chat_dal
 
-#for testing purposes
+# for testing purposes
 from backend.routers.model_client import ask_model
 
-chat_router = Blueprint('chats', __name__, url_prefix='/chats/api')
+chat_router = Blueprint("chats", __name__, url_prefix="/chats/api")
 
-@chat_router.post('')
+
+@chat_router.post("")
 def create_chat():
     chat_data = request.json
-    chat_data['_id'] = str(uuid4())
+    chat_data["_id"] = str(uuid4())
     inserted_id = chat_dal.insert_one_chat(chat_data)
     if inserted_id:
         return jsonify({"inserted_id": inserted_id}), 201
     return jsonify({"error": "Failed to create chat"}), 500
 
-@chat_router.get('/<chat_id>')
+
+@chat_router.get("/<chat_id>")
 def get_chat(chat_id):
     if not chat_id:
         return jsonify({"error": "chat_id query parameter is required"}), 400
@@ -26,7 +28,8 @@ def get_chat(chat_id):
         return jsonify(chat), 200
     return jsonify({"error": "chat not found"}), 404
 
-@chat_router.get('/')
+
+@chat_router.get("/")
 def get_all_chats():
     chat = chat_dal.find_all_chats()
     if chat:
@@ -34,7 +37,7 @@ def get_all_chats():
     return jsonify({"error": "chats not found"}), 404
 
 
-@chat_router.put('/<chat_id>')
+@chat_router.put("/<chat_id>")
 def update_chat(chat_id):
     update_data = request.json
     success = chat_dal.update_one_chat({"_id": chat_id}, update_data)
@@ -42,7 +45,8 @@ def update_chat(chat_id):
         return jsonify({"chat": "chat updated successfully"}), 200
     return jsonify({"error": "Failed to update chat"}), 500
 
-@chat_router.delete('/<chat_id>')
+
+@chat_router.delete("/<chat_id>")
 def delete_chat(chat_id):
     success = chat_dal.delete_one_chat({"_id": chat_id})
     if success:
@@ -50,15 +54,16 @@ def delete_chat(chat_id):
     return jsonify({"error": "Failed to delete chat"}), 500
 
 
-
-@chat_router.post('/<chat_id>/message')
+@chat_router.post("/<chat_id>/message")
 def send_message(chat_id):
     chat_data = request.json
-    chat_data['_id'] = str(uuid4())
+    chat_data["_id"] = str(uuid4())
     inserted_id = chat_dal.insert_one_chat(chat_data)
     messages_for_model = [
-        {"role": "user", "content": chat_data["content"]} #this is important because the way we structure the JS has to save message data as content
-            
+        {
+            "role": "user",
+            "content": chat_data["content"],
+        }  # this is important because the way we structure the JS has to save message data as content
     ]
     assistant_reply = ask_model(messages_for_model)
     chat_data_2 = {
@@ -71,10 +76,5 @@ def send_message(chat_id):
 
         # return jsonify({"chat": "chat deleted successfully"}), 200
         return jsonify({"assistant_response": assistant_reply}), 200
-        
-        
+
     return jsonify({"error": "Failed to create chat"}), 500
-
-
-
-

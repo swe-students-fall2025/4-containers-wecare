@@ -1,12 +1,13 @@
-# backend/model_client.py
-
+# for testing purposes we need to fake ask_model
 import os
+
 TESTING = os.environ.get("TESTING") == "1"
 
 if TESTING:
     # completely fake ask_model for testing
     def ask_model(messages):
         return "FAKE_MODEL_RESPONSE"
+
 else:
 
     import requests
@@ -31,7 +32,6 @@ else:
     model.eval()
     print("Model loaded.")
 
-
     def ask_model(messages):
         prompt = ""
         for m in messages:
@@ -45,7 +45,9 @@ else:
                 prompt += f"[USER] {content}\n"
         prompt += "[ASSISTANT] "
 
-        inputs = tokenizer(prompt, return_tensors="pt", truncation=True).to(MODEL_DEVICE)
+        inputs = tokenizer(prompt, return_tensors="pt", truncation=True).to(
+            MODEL_DEVICE
+        )
 
         with torch.no_grad():
             output_ids = model.generate(
@@ -56,6 +58,6 @@ else:
                 pad_token_id=tokenizer.eos_token_id,
             )
 
-        generated = output_ids[0][inputs["input_ids"].shape[-1]:]
+        generated = output_ids[0][inputs["input_ids"].shape[-1] :]
         reply = tokenizer.decode(generated, skip_special_tokens=True)
         return reply.strip()
