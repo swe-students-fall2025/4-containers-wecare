@@ -1,0 +1,14 @@
+[MESSAGES CONTROL]
+disable=
+    missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    invalid-name,
+    unused-import,
+    import-error,
+    too-few-public-methods,
+    redefined-builtin
+
+[MASTER]
+ignore=venv,env
+ignored-modules=pymongo,dotenv,backend.fake_DAL
