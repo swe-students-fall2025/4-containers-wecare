@@ -98,7 +98,6 @@ else:
                 print(f"Error deleting chat: {e}")
                 return False
 
-    
     class messages_dal:
         """
         Messages DAL that correspond to chats
