@@ -33,11 +33,11 @@ else:
     client.admin.command("ping")
     db = client.get_database(DB_NAME)
 
-
     class chat_dal:
-        """ 
-        Chats: one document per conversation 
         """
+        Chats: one document per conversation
+        """
+
         @staticmethod
         def insert_one_chat(chat_data: Dict[str, Any]) -> str:
             """
@@ -102,6 +102,7 @@ else:
         """
         Messages DAL that correspond to chats
         """
+
         @staticmethod
         def insert_one_message(message_data: Dict[str, Any]) -> str:
             """
