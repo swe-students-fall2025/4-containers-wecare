@@ -33,7 +33,9 @@ else:
     client.admin.command("ping")
     db = client.get_database(DB_NAME)
 
-    # Chats: one document per conversation
+    ''' 
+    Chats: one document per conversation 
+    '''
     class chat_dal:
         @staticmethod
         def insert_one_chat(chat_data: Dict[str, Any]) -> str:
@@ -95,8 +97,10 @@ else:
                 print(f"Error deleting chat: {e}")
                 return False
 
-    # Messages: one document per message in a chat
-    # can store audio URL, transcript, sender, bot answer, etc
+
+    '''
+    Messages DAL that correspond to chats
+    '''
     class messages_dal:
         @staticmethod
         def insert_one_message(message_data: Dict[str, Any]) -> str:

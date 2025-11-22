@@ -3,7 +3,9 @@ A fake Data Access Layer (DAL) to simulate MongoDB operations for testing purpos
 """
 
 
-# fake database to simulate MongoDB operations for testing
+''' 
+fake database to simulate MongoDB operations for testing
+'''
 class fake_collection:
     """test with fake collections"""
 
@@ -64,7 +66,9 @@ class fake_collection:
                 return type("Result", (), {"deleted_count": 1})()
         return type("Result", (), {"deleted_count": 0})()
 
-
+'''
+class fake_db
+'''
 class fake_db:
     def __init__(self):
         """
@@ -77,7 +81,9 @@ class fake_db:
 db = fake_db()
 
 
-# the chat DAL
+'''
+The chats DAL
+'''
 class chat_dal:
     @staticmethod
     def insert_one_chat(data):
@@ -115,7 +121,9 @@ class chat_dal:
         return db.chats.delete_one(filt).deleted_count > 0
 
 
-# the messages DAL
+'''
+class messages_dal
+'''
 class messages_dal:
     @staticmethod
     def insert_one_message(data):
