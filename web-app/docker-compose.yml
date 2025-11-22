@@ -23,8 +23,10 @@ services:
     ports:
       - "5050:5050"
     environment:
-      MODEL_NAME: llama3.2
-      OLLAMA_URL: http://host.docker.internal:11434/api/chat
+      - MODEL_NAME
+      - MODEL_DEVICE
+      - MODEL_MAX_NEW_TOKENS
+      - MODEL_TEMPERATURE
     depends_on:
       - mongo
     extra_hosts:

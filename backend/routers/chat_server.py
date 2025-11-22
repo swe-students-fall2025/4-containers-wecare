@@ -1,5 +1,8 @@
 from flask import Blueprint, request, jsonify
 from uuid import uuid4
+from datetime import datetime
+from backend.routers.model_client import ask_model
+
 
 from backend.DAL import chat_dal
 chat_router = Blueprint('chats', __name__, url_prefix='/chats/api')
@@ -49,25 +52,38 @@ def delete_chat(chat_id):
 
 @chat_router.post('/<chat_id>/message')
 def send_message(chat_id):
-    chat_data = request.json
-    chat_data['_id'] = str(uuid4())
-    inserted_id = chat_dal.insert_one_chat(chat_data)
-    messages_for_model = [
-        {"role": "user", "content": chat_data["content"]} #this is important because the way we structure the JS has to save message data as content
-            
-    ]
-    assistant_reply = ask_model(messages_for_model)
-    chat_data_2 = {
+
+    chat = chat_dal.find_one_chat({"_id": chat_id})
+    if not chat:
+        return jsonify({"error": "chat not found"}), 404
+    
+    usr_message = request.json
+    usr_message["_id"] = str(uuid4())
+    usr_message["timestamp"] = datetime.now().isoformat()
+
+    messages = chat.get("messages", [])
+    messages.append(usr_message)
+
+    # get ai response 
+    ai_reply = ask_model(messages)
+    ai_message = {
         "_id": str(uuid4()),
         "role": "assistant",
-        "content": assistant_reply,
+        "content": ai_reply,
+        "timestamp": datetime.now().isoformat(),
     }
-    inserted_id_2 = chat_dal.insert_one_chat(chat_data_2)
-    if inserted_id and inserted_id_2:
-        return jsonify({"chat": "chat deleted successfully"}), 200
-        
-        
-    return jsonify({"error": "Failed to create chat"}), 500
+    messages.append(ai_message)
+
+    # update chat with new messages
+    success = chat_dal.update_one_chat(
+        {"_id": chat_id},
+        {"messages": messages}
+    )
+
+    if success:
+        return jsonify(ai_message), 200
+    
+    return jsonify({"error": "Failed to send message"}), 500
 
 
 

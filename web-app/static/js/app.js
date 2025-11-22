@@ -180,8 +180,8 @@ async function startRecording() {
   if (isRecording) return;
 
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ 
-      : true });
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true });
     mediaRecorder = new MediaRecorder(stream);
     audioChunks = [];
 
@@ -227,25 +227,33 @@ async function processRecording() {
 }
 
 async function transcribeAudio(audioBlob) {
-  // Placeholder: In production, implement actual speech-to-text
-  // For now, prompt user or use Web Speech API
+  const formData = new FormData();
+  formData.append("audio", audioBlob, "recording.webm");
 
-  // Try using Web Speech API if available
-  if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
-    // Note: This is a simplified version - actual implementation would be more complex
-    showNotification(
-      "Audio recorded! For demo purposes, please type your question.",
-      "info"
-    );
+  showNotification("Transcribing audio...", "info");
+
+  try {
+    const res = await fetch ("/speech/api/transcribe", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (res.ok){
+      const data = await res.json();
+      return data.transcript;
+    }
+    else {
+      console.log("Transcription failed", await res.text());
+      showNotification("Failed to transcribe audio", "error");
+      return null;
+    }
+  }
+  catch (error){
+    console.log("error cant transcribe : ", error);
+    showNotification("Error sending audio for transcription", "error");
     return null;
   }
 
-  // Fallback: ask user to type
-  showNotification(
-    "Speech recognition not available. Please type your question.",
-    "info"
-  );
-  return null;
 }
 
 // Text Message Functions
@@ -289,9 +297,10 @@ async function sendMessage(content) {
     removeTypingIndicator();
 
     if (response.ok) {
-      // The backend should return the assistant's response
-      // For now, we'll fetch the updated chat
-      await loadChat(currentChatId);
+      // the backend now reutrns ai message directly
+      const assistantMessage = await response.json();
+      addMessageToUI(assistantMessage)
+
     } else {
       throw new Error("Failed to send message");
     }
@@ -345,6 +354,7 @@ function scrollToBottom() {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
+// info green, error red
 function showNotification(message, type = "info") {
   // Simple notification system
   const notification = document.createElement("div");
