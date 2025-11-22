@@ -13,8 +13,8 @@ Build a containerized app that uses machine learning. See [instructions](./instr
 
 - [Kazi Hossain](https://github.com/kazisean)
 - [Vaishnavi Suresh](https://github.com/vaishnavi-suresh)
-- [sw5556](https://github.com/sw5556)
-- [Iced-T](https://github.com/TawhidZGit)
+- [Susan Wang](https://github.com/sw5556)
+- [Tawhid Zaman](https://github.com/TawhidZGit)
 - [Amy Liu](https://github.com/Amyliu2003)
 
 ## Task Board
@@ -100,4 +100,4 @@ Stop all containers:
 docker-compose downTo also remove database volume (deletes all data):
 docker-compose down -v## License
 
-See [LICENSE](./LICENSE) file for details.
+**Stopping the Application:** Run `docker-compose down` to stop all containers.
