@@ -4,7 +4,8 @@ A fake Data Access Layer (DAL) to simulate MongoDB operations for testing purpos
 
 
 # fake database to simulate MongoDB operations for testing
-class FakeCollection:
+class fake_collection:
+    """test with fake collections"""
     def __init__(self):
         """
         Initialize an empty collection.
@@ -63,16 +64,16 @@ class FakeCollection:
         return type("Result", (), {"deleted_count": 0})()
 
 
-class FakeDB:
+class fake_db:
     def __init__(self):
         """
         Initialize the fake database with chats and messages collections.
         """
-        self.chats = FakeCollection()
-        self.messages = FakeCollection()
+        self.chats = fake_collection()
+        self.messages = fake_collection()
 
 
-db = FakeDB()
+db = fake_db()
 
 
 # the chat DAL

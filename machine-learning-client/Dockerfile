@@ -11,5 +11,5 @@ COPY . .
 
 EXPOSE 5050
 
-# Run the application
-CMD ["pipenv", "run", "python", "app.py"]
+# Run the application (no main app.py in this directory, used as library by web-app)
+CMD ["pipenv", "run", "python", "-c", "print('ml client library ready')"]

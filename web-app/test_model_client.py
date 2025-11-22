@@ -12,7 +12,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 # Set environment variables
 os.environ["MODEL_NAME"] = "HuggingFaceH4/zephyr-7b-beta"
-os.environ["MODEL_DEVICE"] = "cpu"
 os.environ["MODEL_MAX_NEW_TOKENS"] = "256"
 os.environ["MODEL_TEMPERATURE"] = "0.7"
 

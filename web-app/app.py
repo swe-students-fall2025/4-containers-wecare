@@ -6,6 +6,7 @@ from flask import Flask, render_template, send_from_directory
 from flask_cors import CORS
 from backend.routers.chat_server import chat_router
 from backend.routers.messages_server import messages_router
+from backend.routers.speech_server import speech_router
 
 app = Flask(__name__)
 CORS(app)
@@ -13,6 +14,7 @@ CORS(app)
 # Register blueprints
 app.register_blueprint(chat_router)
 app.register_blueprint(messages_router)
+app.register_blueprint(speech_router)
 
 
 @app.route("/")

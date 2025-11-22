@@ -9,8 +9,8 @@ flask-cors = "*"
 pymongo = "*"
 python-dotenv = "*"
 requests = "*"
-transformers = "*"
-torch = "*"
+openai = "*"
+
 
 [dev-packages]
 pytest = "*"

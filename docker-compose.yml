@@ -20,25 +20,24 @@ services:
     volumes:
       - ./machine-learning-client:/app
     ports:
-      - "5050:5050"
+      - "5051:5050"
     environment:
       MONGO_URI: "mongodb://root:example@mongodb:27017/"
     
   chat-client:
     build:
-      context: ./web-app
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: web-app/Dockerfile
     container_name: chat-client
     env_file:
       - .env
     environment:
       - MODEL_NAME=${MODEL_NAME}
-      - MODEL_DEVICE=${MODEL_DEVICE}
       - MODEL_MAX_NEW_TOKENS=${MODEL_MAX_NEW_TOKENS}
       - MODEL_TEMPERATURE=${MODEL_TEMPERATURE}
-    command: ["python", "chat_client.py"]
+    command: ["python", "web-app/app.py"]
     ports:
-      - "5000:5000"   # only if your web app runs on 5000
+      - "5050:5050"
 
 volumes:
   mongo_data:
