@@ -7,7 +7,8 @@ disable=
     unused-import,
     import-error,
     too-few-public-methods,
-    redefined-builtin
+    redefined-builtin,
+    pointless-string-statement,
 
 [MASTER]
 ignore=venv,env
