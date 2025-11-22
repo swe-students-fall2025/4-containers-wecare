@@ -12,8 +12,8 @@ Build a containerized app that uses machine learning. See [instructions](./instr
 
 - [Kazi Hossain](https://github.com/kazisean)
 - [Vaishnavi Suresh](https://github.com/vaishnavi-suresh)
-- [sw5556](https://github.com/sw5556)
-- [Iced-T](https://github.com/TawhidZGit)
+- [Susan Wang](https://github.com/sw5556)
+- [Tawhid Zaman](https://github.com/TawhidZGit)
 - [Amy Liu](https://github.com/Amyliu2003)
 
 ## Task Board
