@@ -30,29 +30,30 @@ Build a containerized app that uses machine learning. See [instructions](./instr
 - OpenAI API Key from [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
 
 
-### Environment Variables Setup
+## Environment Variables Setup
 
 Create a `.env` file in the **root directory** of the project (same level as `docker-compose.yml`) with the following variables:
 
-# OpenAI API Configuration (REQUIRED)
-OPENAI_API_KEY=sk-your-openai-api-key-here
+### OpenAI API Configuration (REQUIRED)
+`OPENAI_API_KEY=sk-your-openai-api-key-here`
 
-# AI Model Configuration (REQUIRED)
-MODEL_NAME=gpt-3.5-turbo
+### AI Model Configuration (REQUIRED)
+`MODEL_NAME=gpt-3.5-turbo`
 
-# MongoDB Configuration (REQUIRED)
-MONGO_URI=mongodb://root:example@mongodb:27017/
-MONGO_DB=wecare_db
+### MongoDB Configuration (REQUIRED)
+`MONGO_URI=mongodb://root:example@mongodb:27017/
+MONGO_DB=wecare_db`
 
-# MongoDB Initialization (OPTIONAL - matches docker-compose.yml defaults)
-MONGO_INITDB_ROOT_USERNAME=root
-MONGO_INITDB_ROOT_PASSWORD=example**Important Notes:**
+#### MongoDB Initialization (OPTIONAL - matches docker-compose.yml defaults)
+`MONGO_INITDB_ROOT_USERNAME=root
+MONGO_INITDB_ROOT_PASSWORD=example**Important Notes:**`
+
 - Never commit the `.env` file to version control
 - The `.env` file must be in the root directory
 - Replace `sk-your-openai-api-key-here` with your actual OpenAI API key
 - The `MONGO_URI` uses `mongodb` as the hostname (Docker service name, not `localhost`)
 
-See .env.example file.
+See `.env.example` file.
 
 MongoDB is automatically configured and initialized when containers start. The database:
 - Uses credentials: username `root`, password `example`
@@ -92,12 +93,13 @@ MongoDB is automatically configured and initialized when containers start. The d
 
 ### Running in Background
 
-To run containers in detached mode:h
-docker-compose up -d --buildView logs:
-docker-compose logs -f### Stopping the Application
+- **To run containers in detached mode:h**
+   `docker-compose up -d --buildView logs:
+    docker-compose logs -f### Stopping the Application`
 
-Stop all containers:
-docker-compose downTo also remove database volume (deletes all data):
-docker-compose down -v## License
+- **Stop all containers:**
+   `docker-compose downTo also remove database volume (deletes all data):
+   docker-compose down -v## License`
 
-**Stopping the Application:** Run `docker-compose down` to stop all containers.
+- **Stopping the Application:**
+   Run `docker-compose down` to stop all containers.
