@@ -1,3 +1,7 @@
+'''
+Router for chat server interactions.
+'''
+
 from datetime import datetime
 from uuid import uuid4
 
@@ -10,6 +14,9 @@ chat_router = Blueprint("chats", __name__, url_prefix="/chats/api")
 
 @chat_router.post("")
 def create_chat():
+    '''
+    Create a new chat.
+    '''
     chat_data = request.json
     chat_data["_id"] = str(uuid4())
     inserted_id = chat_dal.insert_one_chat(chat_data)
@@ -20,6 +27,9 @@ def create_chat():
 
 @chat_router.get("/<chat_id>")
 def get_chat(chat_id):
+    '''
+    Get a specific chat by ID.
+    '''
     if not chat_id:
         return jsonify({"error": "chat_id query parameter is required"}), 400
     chat = chat_dal.find_one_chat({"_id": chat_id})
@@ -30,6 +40,9 @@ def get_chat(chat_id):
 
 @chat_router.get("/")
 def get_all_chats():
+    '''
+    Get all chats.
+    '''
     chat = chat_dal.find_all_chats()
     if chat:
         return jsonify(chat), 200
@@ -38,6 +51,9 @@ def get_all_chats():
 
 @chat_router.put("/<chat_id>")
 def update_chat(chat_id):
+    ''' 
+    Update a specific chat by ID.
+    '''
     update_data = request.json
     success = chat_dal.update_one_chat({"_id": chat_id}, update_data)
     if success:
@@ -47,6 +63,9 @@ def update_chat(chat_id):
 
 @chat_router.delete("/<chat_id>")
 def delete_chat(chat_id):
+    '''
+    Delete a specific chat by ID.
+    '''
     success = chat_dal.delete_one_chat({"_id": chat_id})
     if success:
         return jsonify({"chat": "chat deleted successfully"}), 200
@@ -55,7 +74,9 @@ def delete_chat(chat_id):
 
 @chat_router.post("/<chat_id>/message")
 def send_message(chat_id):
-
+    '''
+    Send a message to a specific chat. 
+    '''
     chat = chat_dal.find_one_chat({"_id": chat_id})
     if not chat:
         return jsonify({"error": "chat not found"}), 404

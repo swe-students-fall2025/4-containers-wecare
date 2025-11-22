@@ -1,3 +1,7 @@
+'''
+Main application file for the web app.
+'''
+
 from flask_cors import CORS
 from flask import Flask, render_template, send_from_directory
 from backend.routers.speech_server import speech_router
@@ -19,11 +23,17 @@ app.register_blueprint(speech_router)
 
 @app.route("/")
 def index():
+    '''
+    Render the main index page.
+    '''
     return render_template("index.html")
 
 
 @app.route("/static/<path:path>")
 def send_static(path):
+    '''
+    Serve static files.
+    '''
     return send_from_directory("static", path)
 
 

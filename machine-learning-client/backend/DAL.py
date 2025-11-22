@@ -1,3 +1,7 @@
+'''
+Data Access Layer (DAL) for MongoDB interactions.
+'''
+
 import os
 from typing import Any, Dict, List, Optional
 
@@ -33,6 +37,9 @@ else:
     class chat_dal:
         @staticmethod
         def insert_one_chat(chat_data: Dict[str, Any]) -> str:
+            '''
+            insert one chat document.
+            '''
             try:
                 result = db.chats.insert_one(chat_data)
                 return str(result.inserted_id)
@@ -42,6 +49,9 @@ else:
 
         @staticmethod
         def find_one_chat(filter: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+            '''
+            find one chat document matching the filter.
+            '''
             try:
                 return db.chats.find_one(filter)
             except PyMongoError as e:
@@ -50,6 +60,9 @@ else:
 
         @staticmethod
         def find_all_chats() -> List[Dict[str, Any]]:
+            '''
+            find all chat documents.
+            '''
             try:
                 return list(db.chats.find({}))
             except PyMongoError as e:
@@ -60,6 +73,9 @@ else:
         def update_one_chat(
             filter: Dict[str, Any], update_data: Dict[str, Any]
         ) -> bool:
+            '''
+            update one chat document matching the filter.
+            '''
             try:
                 result = db.chats.update_one(filter, {"$set": update_data})
                 return result.modified_count > 0
@@ -69,6 +85,9 @@ else:
 
         @staticmethod
         def delete_one_chat(filter: Dict[str, Any]) -> bool:
+            ''' 
+            delete one chat document matching the filter.
+            '''
             try:
                 result = db.chats.delete_one(filter)
                 return result.deleted_count > 0
@@ -81,6 +100,9 @@ else:
     class messages_dal:
         @staticmethod
         def insert_one_message(message_data: Dict[str, Any]) -> str:
+            '''
+            insert one message document.
+            '''
             try:
                 result = db.messages.insert_one(message_data)
                 return str(result.inserted_id)
@@ -90,6 +112,9 @@ else:
 
         @staticmethod
         def find_one_message(filter: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+            ''' 
+            find one message document matching the filter.
+            '''
             try:
                 return db.messages.find_one(filter)
             except PyMongoError as e:
@@ -98,6 +123,9 @@ else:
 
         @staticmethod
         def find_all_messages() -> List[Dict[str, Any]]:
+            ''' 
+            find all message documents.
+            '''
             try:
                 return list(db.messages.find({}))
             except PyMongoError as e:
@@ -108,6 +136,9 @@ else:
         def update_one_message(
             filter: Dict[str, Any], update_data: Dict[str, Any]
         ) -> bool:
+            '''
+            update one message document matching the filter.
+            '''
             try:
                 result = db.messages.update_one(filter, {"$set": update_data})
                 return result.modified_count > 0
@@ -117,6 +148,9 @@ else:
 
         @staticmethod
         def delete_one_message(filter: Dict[str, Any]) -> bool:
+            '''
+            delete one message document matching the filter.
+            '''
             try:
                 result = db.messages.delete_one(filter)
                 return result.deleted_count > 0
