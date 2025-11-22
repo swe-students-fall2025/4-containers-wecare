@@ -7,7 +7,12 @@ disable=
     unused-import,
     import-error,
     too-few-public-methods,
-    redefined-builtin
+    redefined-builtin,
+    redefined-outer-name,
+    unused-argument,
+    import-outside-toplevel,
+    wrong-import-order
+
 
 [MASTER]
 ignore=venv,env
