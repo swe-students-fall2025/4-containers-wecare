@@ -35,24 +35,30 @@ Build a containerized app that uses machine learning. See [instructions](./instr
 Create a `.env` file in the **root directory** of the project (same level as `docker-compose.yml`) with the following variables:
 
 ```
-# OpenAI API Configuration (REQUIRED)
+#OpenAI API Configuration (REQUIRED)
 OPENAI_API_KEY=sk-your-openai-api-key-here
 
-# AI Model Configuration (REQUIRED)
+#AI Model Configuration (REQUIRED)
 MODEL_NAME=gpt-3.5-turbo
 
-# MongoDB Configuration (REQUIRED)
+#MongoDB Configuration (REQUIRED)
 MONGO_URI=mongodb://root:example@mongodb:27017/
 MONGO_DB=wecare_db
 
-# MongoDB Initialization (OPTIONAL - matches docker-compose.yml defaults)
+#MongoDB Initialization (OPTIONAL - matches docker-compose.yml defaults)
 MONGO_INITDB_ROOT_USERNAME=root
 MONGO_INITDB_ROOT_PASSWORD=example**Important Notes:**
 ```
 
-See .env.example file.
+**Tips**
+- Never commit the `.env` file to version control
+- The `.env` file must be in the root directory
+- Replace `sk-your-openai-api-key-here` with your actual OpenAI API key
+- The `MONGO_URI` uses `mongodb` as the hostname (Docker service name, not `localhost`)
 
-MongoDB is automatically configured and initialized when containers start. The database:
+**See `.env.example` file.**
+
+**MongoDB is automatically configured and initialized when containers start. The database:**
 - Uses credentials: username `root`, password `example`
 - Stores data in a persistent Docker volume
 - Creates the database specified in `MONGO_DB` environment variable automatically
