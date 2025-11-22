@@ -16,8 +16,6 @@ def fake_ask_model(messages):
 """
 Fake collection class to simulate MongoDB collection operations.
 """
-
-
 class FakeCollection:
     def __init__(self):
         """

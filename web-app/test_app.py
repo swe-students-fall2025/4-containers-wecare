@@ -165,3 +165,4 @@ def test_invalid_json(client):
     )
     # Should return 400 or 500 depending on error handling
     assert response.status_code in [400, 500]
+    
