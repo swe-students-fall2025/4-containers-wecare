@@ -2,14 +2,11 @@
 A fake Data Access Layer (DAL) to simulate MongoDB operations for testing purposes.
 """
 
-""" 
-fake database to simulate MongoDB operations for testing
-"""
-
 
 class fake_collection:
-    """test with fake collections"""
-
+    """ 
+    fake database to simulate MongoDB operations for testing
+    """
     def __init__(self):
         """
         Initialize an empty collection.
@@ -68,12 +65,10 @@ class fake_collection:
         return type("Result", (), {"deleted_count": 0})()
 
 
-"""
-class fake_db
-"""
-
-
 class fake_db:
+    """
+    class fake_db
+    """
     def __init__(self):
         """
         Initialize the fake database with chats and messages collections.
@@ -84,13 +79,10 @@ class fake_db:
 
 db = fake_db()
 
-
-"""
-The chats DAL
-"""
-
-
 class chat_dal:
+    """
+    The chats DAL
+    """
     @staticmethod
     def insert_one_chat(data):
         """
@@ -127,12 +119,12 @@ class chat_dal:
         return db.chats.delete_one(filt).deleted_count > 0
 
 
-"""
-class messages_dal
-"""
 
 
 class messages_dal:
+    """
+    class messages_dal
+    """
     @staticmethod
     def insert_one_message(data):
         """
