@@ -1,12 +1,12 @@
+from flask_cors import CORS
+from flask import Flask, render_template, send_from_directory
+from backend.routers.speech_server import speech_router
+from backend.routers.messages_server import messages_router
+from backend.routers.chat_server import chat_router
 import os
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from flask import Flask, render_template, send_from_directory
-from flask_cors import CORS
-from backend.routers.chat_server import chat_router
-from backend.routers.messages_server import messages_router
-from backend.routers.speech_server import speech_router
 
 app = Flask(__name__)
 CORS(app)

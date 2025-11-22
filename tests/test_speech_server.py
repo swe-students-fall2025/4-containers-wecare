@@ -3,9 +3,10 @@ Unit tests for the speech server
 """
 
 import io
+
 import pytest
-from flask import Flask
 from backend.routers.speech_server import speech_router
+from flask import Flask
 
 
 # flask app fixture
@@ -22,7 +23,8 @@ def client():
     with app.test_client() as client:
         yield client
 
-#test cases for speech_server.py
+
+# test cases for speech_server.py
 def test_transcribe_fake(client):
     """
     Test fake transcription runs in TESTING mode

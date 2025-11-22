@@ -2,8 +2,12 @@
 Conftest module to set up test environment and mock backend components.
 """
 
-import sys
+from tests.fake_backend import FakeDB, fake_ask_model
+import backend.fake_DAL as fake_DAL
+import backend.DAL as DAL
 import os
+import sys
+
 import pytest
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -15,10 +19,6 @@ os.environ["TESTING"] = "1"
 os.environ["MONGO_URI"] = "fake"
 os.environ["MONGO_DB"] = "fake"
 
-
-from tests.fake_backend import FakeDB, fake_ask_model
-import backend.DAL as DAL
-import backend.fake_DAL as fake_DAL
 
 # Create a single instance of FakeDB to be used in tests
 FAKE_DB = FakeDB()
@@ -46,14 +46,12 @@ def mock_backend(monkeypatch, request):
 
     # Seed chat for specific tests
     if request.node.name in {
-    "test_get_chat",
-    "test_update_chat",
-    "test_delete_chat",
-    "test_send_message"
+        "test_get_chat",
+        "test_update_chat",
+        "test_delete_chat",
+        "test_send_message",
     }:
         FAKE_DB.chats.insert_one({"_id": "123", "text": "hello"})
-
-    
 
     # Seed messages for specific tests
     if request.node.name == "test_get_all_chats":

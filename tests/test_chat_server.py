@@ -3,8 +3,8 @@ Tests for chat_server.py
 """
 
 import pytest
-from flask import Flask
 from backend.routers.chat_server import chat_router
+from flask import Flask
 
 
 # flask app fixture
@@ -72,6 +72,5 @@ def test_send_message(client):
     assert resp.status_code == 200
     data = resp.get_json()
     assert data["role"] == "assistant"
-    assert data["content"] == "assistant reply" 
+    assert data["content"] == "assistant reply"
     assert "timestamp" in data
-

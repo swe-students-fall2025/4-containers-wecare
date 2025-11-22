@@ -6,7 +6,7 @@ TESTING = os.environ.get("TESTING") == "1"
 
 if TESTING:
     # use the fake DAL for testing
-    from backend.fake_DAL import db, chat_dal, messages_dal
+    from backend.fake_DAL import chat_dal, db, messages_dal
 else:
 
     from dotenv import load_dotenv

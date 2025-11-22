@@ -3,9 +3,9 @@ Unit tests for messages_server.py
 """
 
 import pytest
-from flask import Flask
-from backend.routers.messages_server import messages_router
 from backend.DAL import messages_dal
+from backend.routers.messages_server import messages_router
+from flask import Flask
 
 
 # flask app fixture

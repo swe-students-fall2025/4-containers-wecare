@@ -4,7 +4,7 @@ Speech server router for handling audio transcription requests.
 
 import os
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify, request
 
 TESTING = os.environ.get("TESTING") == "1"
 
@@ -26,12 +26,13 @@ if TESTING:
 else:
 
     import logging
-    from openai import OpenAI
-    from flask import Blueprint, request, jsonify
-    from werkzeug.utils import secure_filename
     import tempfile
 
-    # open ai setup 
+    from flask import Blueprint, jsonify, request
+    from openai import OpenAI
+    from werkzeug.utils import secure_filename
+
+    # open ai setup
     api_key = os.getenv("OPENAI_API_KEY")
 
     if not api_key:
@@ -39,17 +40,17 @@ else:
 
     client = OpenAI(api_key=api_key)
 
-    speech_router = Blueprint('speech', __name__, url_prefix='/speech/api')
+    speech_router = Blueprint("speech", __name__, url_prefix="/speech/api")
 
-    @speech_router.post('/transcribe')
+    @speech_router.post("/transcribe")
     def transcribe_audio():
         """
         gets audio and return it as text
         """
-        if 'audio' not in request.files:
+        if "audio" not in request.files:
             return jsonify({"error": "no audio file given"}), 400
-        audio_file = request.files['audio']
-        if audio_file.filename == '':
+        audio_file = request.files["audio"]
+        if audio_file.filename == "":
             return jsonify({"error": "no audio file"}), 400
 
         temp_path = None
@@ -62,14 +63,15 @@ else:
             audio_file.save(temp_path)
             # check if saved temp audio file
             if not os.path.exists(temp_path) or os.path.getsize(temp_path) == 0:
-                return jsonify({"error": "Audio file is empty or could not be saved"}), 400
+                return (
+                    jsonify({"error": "Audio file is empty or could not be saved"}),
+                    400,
+                )
 
             # transcribe audio using openai
             with open(temp_path, "rb") as f:
                 transcript_text = client.audio.transcriptions.create(
-                    model="whisper-1",
-                    file=f,
-                    response_format="text"
+                    model="whisper-1", file=f, response_format="text"
                 )
 
             return jsonify({"transcript": transcript_text})

@@ -1,7 +1,7 @@
-from flask import Blueprint, request, jsonify
 from uuid import uuid4
 
 from backend.DAL import messages_dal
+from flask import Blueprint, jsonify, request
 
 messages_router = Blueprint("messages", __name__, url_prefix="/messages/api")
 

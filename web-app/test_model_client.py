@@ -2,9 +2,10 @@
 Unit tests for the model_client module
 """
 
-import sys
 import os
-from unittest.mock import patch, MagicMock, Mock
+import sys
+from unittest.mock import MagicMock, Mock, patch
+
 import pytest
 
 # Add parent directory to path
