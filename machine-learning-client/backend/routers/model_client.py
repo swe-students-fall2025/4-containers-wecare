@@ -1,3 +1,7 @@
+"""
+Router for model client interactions.
+"""
+
 import os
 
 TESTING = os.environ.get("TESTING") == "1"
