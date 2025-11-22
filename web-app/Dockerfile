@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# Set working directory
+# set working directory
 WORKDIR /app
 
 # Install system dependencies
@@ -14,17 +14,14 @@ RUN pip install --no-cache-dir \
     flask-cors \
     pymongo \
     python-dotenv \
-    requests \
-    openai
+    requests
     
 
 # Copy application code
-COPY web-app/ ./web-app/
-COPY machine-learning-client/backend/ ./backend/
+COPY . .
 
-# Expose port
+# open port
 EXPOSE 5050
 
-
-# Default command (will be overridden by docker-compose) for now
-CMD ["python", "web-app/app.py"]
+# Default command
+CMD ["python", "app.py"]
