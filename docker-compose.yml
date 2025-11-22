@@ -25,7 +25,9 @@ services:
       MONGO_URI: "mongodb://root:example@mongodb:27017/"
     
   chat-client:
-    build: .
+    build:
+      context: ./web-app
+      dockerfile: Dockerfile
     container_name: chat-client
     env_file:
       - .env
@@ -35,7 +37,8 @@ services:
       - MODEL_MAX_NEW_TOKENS=${MODEL_MAX_NEW_TOKENS}
       - MODEL_TEMPERATURE=${MODEL_TEMPERATURE}
     command: ["python", "chat_client.py"]
-
+    ports:
+      - "5000:5000"   # only if your web app runs on 5000
 
 volumes:
   mongo_data:
