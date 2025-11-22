@@ -28,7 +28,7 @@ Build a containerized app that uses machine learning. See [instructions](./instr
 - [Docker Compose](https://docs.docker.com/compose/)
 
 **Environment Variables:** Download .env file sent in the group discord.
-**Running the Application:** From the project root directory, run `docker-compose up --build` to build and start all containers. [INSERT MORE LATER]
+**Running the Application:** From the project root directory, run `docker-compose up --build` to build and start all containers.
 
 **Database Setup:** MongoDB is automatically configured in docker-compose.yml with username `root`, password `example`, and a persistent volume for data storage. No additional setup is required as the database initializes automatically on first run.
 
