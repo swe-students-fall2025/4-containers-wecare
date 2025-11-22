@@ -1,4 +1,3 @@
-# Use Python 3.11 slim image
 FROM python:3.11-slim
 
 # Set working directory
@@ -16,17 +15,16 @@ RUN pip install --no-cache-dir \
     pymongo \
     python-dotenv \
     requests \
-    transformers \
-    torch
+    openai
+    
 
-# Copy application code (entire repo, since build context is ..)
-COPY . .
+# Copy application code
+COPY web-app/ ./web-app/
+COPY machine-learning-client/backend/ ./backend/
 
 # Expose port
 EXPOSE 5050
 
-# No need to set FLASK_APP here since we're using python directly
-ENV PYTHONUNBUFFERED=1
 
-# Default command (will be overridden by docker-compose)
+# Default command (will be overridden by docker-compose) for now
 CMD ["python", "web-app/app.py"]
