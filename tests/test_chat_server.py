@@ -70,4 +70,8 @@ def test_send_message(client):
     """
     resp = client.post("/chats/api/123/message", json={"content": "hi"})
     assert resp.status_code == 200
-    assert resp.get_json()["assistant_response"] == "assistant reply"
+    data = resp.get_json()
+    assert data["role"] == "assistant"
+    assert data["content"] == "assistant reply" 
+    assert "timestamp" in data
+
