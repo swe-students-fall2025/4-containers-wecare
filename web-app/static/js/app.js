@@ -79,6 +79,19 @@ async function createNewChat() {
   }
 }
 
+function renderMarkdown(text) {
+  // Convert markdown to HTML
+  const html = marked.parse(text);
+  // Sanitize for safety
+  return DOMPurify.sanitize(html);
+}
+
+marked.setOptions({
+  highlight: (code, lang) => {
+    try { return hljs.highlight(code, { language: lang }).value; }
+    catch { return hljs.highlightAuto(code).value; }
+  }
+});
 
 async function loadChatHistory() {
   try {
@@ -166,7 +179,7 @@ function addMessageToUI(message) {
   messageDiv.innerHTML = `
         <div class="message-avatar">${avatar}</div>
         <div>
-            <div class="message-content">${escapeHtml(message.content)}</div>
+           <div class="message-content">${renderMarkdown(message.content)}</div>
             <div class="message-time">${time}</div>
         </div>
     `;

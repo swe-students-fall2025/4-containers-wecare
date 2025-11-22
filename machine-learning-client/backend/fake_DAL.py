@@ -6,6 +6,7 @@ A fake Data Access Layer (DAL) to simulate MongoDB operations for testing purpos
 # fake database to simulate MongoDB operations for testing
 class fake_collection:
     """test with fake collections"""
+
     def __init__(self):
         """
         Initialize an empty collection.

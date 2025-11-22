@@ -12,9 +12,12 @@ def fake_ask_model(messages):
     """
     return "assistant reply"
 
+
 """
 Fake collection class to simulate MongoDB collection operations.
 """
+
+
 class FakeCollection:
     def __init__(self):
         """
@@ -84,9 +87,12 @@ class FakeCollection:
                 break
         return MagicMock(deleted_count=deleted)
 
+
 """
 Fake database class to hold fake collections.
 """
+
+
 class FakeDB:
     def __init__(self):
         """

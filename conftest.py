@@ -2,21 +2,23 @@
 Conftest module to set up test environment and mock backend components.
 """
 
-import sys, os
+from tests.fake_backend import FakeDB, fake_ask_model
+import backend.fake_DAL as fake_DAL
+import backend.DAL as DAL
+import os
+import sys
+
 import pytest
+
+ROOT = os.path.abspath(os.path.dirname(__file__))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "machine-learning-client"))
 
 # Set environment variables for testing
 os.environ["TESTING"] = "1"
 os.environ["MONGO_URI"] = "fake"
 os.environ["MONGO_DB"] = "fake"
 
-# Add machine-learning-client/ to Python path
-sys.path.append(os.path.abspath("./machine-learning-client"))
-
-
-from tests.fake_backend import FakeDB, fake_ask_model
-import backend.DAL as DAL
-import backend.fake_DAL as fake_DAL
 
 # Create a single instance of FakeDB to be used in tests
 FAKE_DB = FakeDB()
@@ -43,7 +45,12 @@ def mock_backend(monkeypatch, request):
     monkeypatch.setattr(model_client, "ask_model", fake_ask_model)
 
     # Seed chat for specific tests
-    if request.node.name in {"test_get_chat", "test_update_chat", "test_delete_chat"}:
+    if request.node.name in {
+        "test_get_chat",
+        "test_update_chat",
+        "test_delete_chat",
+        "test_send_message",
+    }:
         FAKE_DB.chats.insert_one({"_id": "123", "text": "hello"})
 
     # Seed messages for specific tests
