@@ -24,18 +24,17 @@ services:
     environment:
       MONGO_URI: "mongodb://root:example@mongodb:27017/"
     
-  chat-client:
+  web-app:
     build:
-      context: .
-      dockerfile: web-app/Dockerfile
-    container_name: chat-client
+      context: ./web-app
+      dockerfile: Dockerfile
+    container_name: web-app
     env_file:
       - .env
     environment:
-      - MODEL_NAME=${MODEL_NAME}
-      - MODEL_MAX_NEW_TOKENS=${MODEL_MAX_NEW_TOKENS}
-      - MODEL_TEMPERATURE=${MODEL_TEMPERATURE}
-    command: ["python", "web-app/app.py"]
+      - MONGO_URI=mongodb://root:example@mongodb:27017/
+    depends_on:
+      - mongo
     ports:
       - "5050:5050"
 
