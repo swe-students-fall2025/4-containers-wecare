@@ -3,8 +3,12 @@ Speech server router for handling audio transcription requests.
 """
 
 import os
+import tempfile
 
 from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request
+from openai import OpenAI
+from werkzeug.utils import secure_filename
 
 TESTING = os.environ.get("TESTING") == "1"
 
@@ -24,14 +28,6 @@ if TESTING:
         return jsonify({"text": "FAKE_TRANSCRIPTION"}), 200
 
 else:
-
-    import logging
-    import tempfile
-
-    from flask import Blueprint, jsonify, request
-    from openai import OpenAI
-    from werkzeug.utils import secure_filename
-
     # open ai setup
     api_key = os.getenv("OPENAI_API_KEY")
 
@@ -75,12 +71,12 @@ else:
                 )
 
             return jsonify({"transcript": transcript_text})
-        except Exception as e:
+        except Exception as e: # pylint: disable=broad-exception-caught
             return jsonify({"error": f"failed to transcribe audio: {str(e)}"}), 500
         finally:
             # clean up temp file
             if temp_path and os.path.exists(temp_path):
                 try:
                     os.remove(temp_path)
-                except Exception as e:
+                except Exception as e: # pylint: disable=broad-exception-caught
                     print(f"could not remove temp file {temp_path}: {e}")

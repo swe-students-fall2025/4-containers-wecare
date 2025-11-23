@@ -5,10 +5,6 @@ name = "pypi"
 
 [packages]
 pylint = "*"
-black = "*"
-tomli = "*"
-openai = "*"
-python-dotenv = "*"
 
 [dev-packages]
 
