@@ -1,9 +1,11 @@
+"""main backend file"""
+
+import os
 from flask import Flask
 from flask_cors import CORS
 from backend.routers.chat_server import chat_router
 from backend.routers.messages_server import messages_router
 from backend.routers.speech_server import speech_router
-import os
 from dotenv import load_dotenv
 
 # Load environment variables

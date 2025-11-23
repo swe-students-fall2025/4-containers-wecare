@@ -4,10 +4,11 @@ Router for chat server interactions.
 
 from datetime import datetime
 from uuid import uuid4
+from flask import Blueprint, jsonify, request
+
 
 from backend.DAL import chat_dal
 from backend.routers.model_client import ask_model
-from flask import Blueprint, jsonify, request
 
 chat_router = Blueprint("chats", __name__, url_prefix="/chats/api")
 

@@ -1,9 +1,7 @@
-"""
-A fake Data Access Layer (DAL) to simulate MongoDB operations for testing purposes.
-"""
+"""A fake Data Access Layer (DAL) to simulate MongoDB operations for testing purposes."""  # pylint: disable=invalid-name
 
 
-class fake_collection:
+class fake_collection:  # pylint: disable=
     """
     fake database to simulate MongoDB operations for testing
     """
@@ -66,7 +64,7 @@ class fake_collection:
         return type("Result", (), {"deleted_count": 0})()
 
 
-class fake_db:
+class fake_db:  # pylint: disable=too-few-public-methods
     """
     class fake_db
     """
@@ -159,6 +157,6 @@ class messages_dal:
     @staticmethod
     def delete_one_message(filt):
         """
-        ddelete one message document matching the filter.
+        delete one message document matching the filter.
         """
         return db.messages.delete_one(filt).deleted_count > 0
