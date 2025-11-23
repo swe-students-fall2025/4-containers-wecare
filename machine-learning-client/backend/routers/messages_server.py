@@ -1,3 +1,7 @@
+"""
+router for message server interactions.
+"""
+
 from uuid import uuid4
 
 from backend.DAL import messages_dal
@@ -8,7 +12,9 @@ messages_router = Blueprint("messages", __name__, url_prefix="/messages/api")
 
 @messages_router.post("")
 def create_message():
-    """ create meassge and add it """
+    """
+    Create a new message.
+    """
     message_data = request.json
     message_data["_id"] = str(uuid4())
     inserted_id = messages_dal.insert_one_message(message_data)
@@ -30,7 +36,9 @@ def get_message(message_id):
 
 @messages_router.get("/")
 def get_all_messages():
-    """ get all messages """
+    """
+    Get all messages.
+    """
     message = messages_dal.find_all_messages()
     if message:
         return jsonify(message), 200

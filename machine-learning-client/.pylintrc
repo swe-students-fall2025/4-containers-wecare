@@ -1,0 +1,28 @@
+[MESSAGES CONTROL]
+disable=
+
+    invalid-name,
+        # simpply to allow short names like 'db' for database variables.
+
+    unused-import,
+        # Many imports appear unused in pytest fixtures / Flask blueprints
+        # because they are used implicitly by the framework.
+
+    import-error,
+        # GitHub Actions CI does NOT install pymongo, python-dotenv, etc. so these imports fail there.
+        # Therefore we have to disable this check for CI to pass.
+
+    too-few-public-methods,
+        # We have to ignore because of DAL classes with only one public method.
+
+    redefined-builtin,
+        # We have to ignore cases where variables are named 'id', 'list', etc.
+        # This is common in database code and test code.
+
+[MASTER]
+ignore=venv,env
+    # Ignore local virtual environments that should never be linted.
+
+ignored-modules=pymongo,dotenv,backend.fake_DAL
+    # pymongo + dotenv do not exist in CI (only in Docker), so lint would fail.
+    # backend.fake_DAL is a testing utility and not production code.
