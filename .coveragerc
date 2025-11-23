@@ -1,0 +1,4 @@
+[run]
+omit =
+    machine-learning-client/backend/DAL.py
+    machine-learning-client/backend/fake_DAL.py
