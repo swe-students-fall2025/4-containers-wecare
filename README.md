@@ -93,9 +93,7 @@ cd 4-containers-wecare
 
 3. **Verify `.env` file exists** with all required variables (see Configuration section above)
 
-4. **Build and start all containers:**
- 
-   docker-compose up --build
+4. **Build and start all containers:**  `docker-compose up --build`
 
 5. **Access the application:**
    - Web interface: `http://localhost:5050`
