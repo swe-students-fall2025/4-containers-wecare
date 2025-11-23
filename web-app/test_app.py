@@ -2,20 +2,28 @@
 Unit tests for the web application
 """
 
+import sys  # pylint: disable=unused-import
+from unittest.mock import MagicMock, Mock, patch  # pylint: disable=unused-import
+import requests
 import pytest
-from app import app
+from app import app as flask_app
+from app import db  # pylint: disable=unused-import
 
 
 @pytest.fixture
-def client():
-    """Create a test client for the Flask app"""
-    app.config["TESTING"] = True
-    with app.test_client() as client:
-        yield client
+def app():
+    """create application for the tests."""
+
+    flask_app.config.update(
+        {
+            "TESTING": True,
+        }
+    )
+    yield flask_app
 
 
 def test_index_route(client):
-    """Test that the index route returns 200"""
+    """test that the index route returns 200"""
     response = client.get("/")
     assert response.status_code == 200
     assert b"Tech Helper" in response.data
@@ -30,13 +38,15 @@ def test_static_files(client):
 def test_create_chat_endpoint(client, monkeypatch):
     """Test creating a new chat"""
 
-    # Mock the database insert
-    def mock_insert(*args, **kwargs):
-        return "test_chat_id_123"
+    # mock requests.request
+    mock_response = Mock()
+    mock_response.status_code = 201
+    mock_response.content = b'{"inserted_id": "test_chat_id_123"}'
+    mock_response.raw.headers = {"Content-Type": "application/json"}
 
-    from backend import DAL
+    mock_request = Mock(return_value=mock_response)
 
-    monkeypatch.setattr(DAL.chat_dal, "insert_one_chat", mock_insert)
+    monkeypatch.setattr(requests, "request", mock_request)
 
     response = client.post(
         "/chats/api",
@@ -51,16 +61,15 @@ def test_create_chat_endpoint(client, monkeypatch):
 def test_get_all_chats(client, monkeypatch):
     """Test getting all chats"""
 
-    # Mock the database query
-    def mock_find_all(*args, **kwargs):
-        return [
-            {"_id": "1", "title": "Chat 1", "messages": []},
-            {"_id": "2", "title": "Chat 2", "messages": []},
-        ]
+    # mock requests.request
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.content = b'[{"_id": "1", "title": "Chat 1", "messages": []}, {"_id": "2", "title": "Chat 2", "messages": []}]'  # pylint: disable=line-too-long
+    mock_response.raw.headers = {"Content-Type": "application/json"}
 
-    from backend import DAL
+    mock_request = Mock(return_value=mock_response)
 
-    monkeypatch.setattr(DAL.chat_dal, "find_all_chats", mock_find_all)
+    monkeypatch.setattr(requests, "request", mock_request)
 
     response = client.get("/chats/api/")
     assert response.status_code == 200
@@ -71,17 +80,15 @@ def test_get_all_chats(client, monkeypatch):
 def test_get_single_chat(client, monkeypatch):
     """Test getting a specific chat"""
 
-    # Mock the database query
-    def mock_find_one(*args, **kwargs):
-        return {
-            "_id": "test_id",
-            "title": "Test Chat",
-            "messages": [{"role": "user", "content": "Hello"}],
-        }
+    # Mock requests.request
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.content = b'{"_id": "test_id", "title": "Test Chat", "messages": [{"role": "user", "content": "Hello"}]}'  # pylint: disable=line-too-long
+    mock_response.raw.headers = {"Content-Type": "application/json"}
 
-    from backend import DAL
+    mock_request = Mock(return_value=mock_response)
 
-    monkeypatch.setattr(DAL.chat_dal, "find_one_chat", mock_find_one)
+    monkeypatch.setattr(requests, "request", mock_request)
 
     response = client.get("/chats/api/test_id")
     assert response.status_code == 200
@@ -93,13 +100,15 @@ def test_get_single_chat(client, monkeypatch):
 def test_chat_not_found(client, monkeypatch):
     """Test getting a non-existent chat"""
 
-    # Mock the database query to return None
-    def mock_find_one(*args, **kwargs):
-        return None
+    # Mock requests.request
+    mock_response = Mock()
+    mock_response.status_code = 404
+    mock_response.content = b'{"error": "Chat not found"}'
+    mock_response.raw.headers = {"Content-Type": "application/json"}
 
-    from backend import DAL
+    mock_request = Mock(return_value=mock_response)
 
-    monkeypatch.setattr(DAL.chat_dal, "find_one_chat", mock_find_one)
+    monkeypatch.setattr(requests, "request", mock_request)
 
     response = client.get("/chats/api/nonexistent_id")
     assert response.status_code == 404
@@ -108,13 +117,15 @@ def test_chat_not_found(client, monkeypatch):
 def test_update_chat(client, monkeypatch):
     """Test updating a chat"""
 
-    # Mock the database update
-    def mock_update(*args, **kwargs):
-        return True
+    # Mock requests.request
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.content = b'{"status": "success"}'
+    mock_response.raw.headers = {"Content-Type": "application/json"}
 
-    from backend import DAL
+    mock_request = Mock(return_value=mock_response)
 
-    monkeypatch.setattr(DAL.chat_dal, "update_one_chat", mock_update)
+    monkeypatch.setattr(requests, "request", mock_request)
 
     response = client.put(
         "/chats/api/test_id",
@@ -127,13 +138,15 @@ def test_update_chat(client, monkeypatch):
 def test_delete_chat(client, monkeypatch):
     """Test deleting a chat"""
 
-    # Mock the database delete
-    def mock_delete(*args, **kwargs):
-        return True
+    # Mock requests.request
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.content = b'{"status": "success"}'
+    mock_response.raw.headers = {"Content-Type": "application/json"}
 
-    from backend import DAL
+    mock_request = Mock(return_value=mock_response)
 
-    monkeypatch.setattr(DAL.chat_dal, "delete_one_chat", mock_delete)
+    monkeypatch.setattr(requests, "request", mock_request)
 
     response = client.delete("/chats/api/test_id")
     assert response.status_code == 200
@@ -142,13 +155,15 @@ def test_delete_chat(client, monkeypatch):
 def test_create_message(client, monkeypatch):
     """Test creating a message"""
 
-    # Mock the database insert
-    def mock_insert(*args, **kwargs):
-        return "test_message_id_456"
+    # Mock requests.request
+    mock_response = Mock()
+    mock_response.status_code = 201
+    mock_response.content = b'{"inserted_id": "test_message_id_456"}'
+    mock_response.raw.headers = {"Content-Type": "application/json"}
 
-    from backend import DAL
+    mock_request = Mock(return_value=mock_response)
 
-    monkeypatch.setattr(DAL.messages_dal, "insert_one_message", mock_insert)
+    monkeypatch.setattr(requests, "request", mock_request)
 
     response = client.post(
         "/messages/api",
@@ -158,10 +173,33 @@ def test_create_message(client, monkeypatch):
     assert response.status_code == 201
 
 
-def test_invalid_json(client):
-    """Test sending invalid JSON"""
-    response = client.post(
-        "/chats/api", data="invalid json", content_type="application/json"
-    )
-    # Should return 400 or 500 depending on error handling
-    assert response.status_code in [400, 500]
+def test_get_messages(client, monkeypatch):  # pylint: disable=unused-import
+    """Test getting messages from mongodb"""
+
+    # Mock pymongo
+    mock_db = Mock()
+    mock_db.messages.find.return_value = [{"content": "msg1"}, {"content": "msg2"}]
+
+    with patch("app.db", mock_db):
+        response = client.get("/api/messages")
+        assert response.status_code == 200
+        data = response.get_json()
+        assert len(data) == 2
+
+
+def test_proxy_speech(client, monkeypatch):
+    """Test proxy speech endpoint"""
+
+    # Mock requests.request
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.content = b"audio_data"
+    mock_response.raw.headers = {"Content-Type": "audio/mpeg"}
+
+    mock_request = Mock(return_value=mock_response)
+
+    monkeypatch.setattr(requests, "request", mock_request)
+
+    response = client.post("/speech/api/generate")
+    assert response.status_code == 200
+    assert response.data == b"audio_data"

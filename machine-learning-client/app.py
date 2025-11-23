@@ -12,18 +12,23 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# Register all blueprints
+# register all blueprints
 app.register_blueprint(chat_router)
 app.register_blueprint(messages_router)
 app.register_blueprint(speech_router)
 
+
 @app.route("/")
 def index():
+    """server home page"""
     return {"message": "Machine Learning Client API is running"}
+
 
 @app.route("/health")
 def health_check():
+    """check health of the backend"""
     return {"status": "healthy"}
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5050))

@@ -74,9 +74,7 @@ def delete_chat(chat_id):
 
 @chat_router.post("/<chat_id>/message")
 def send_message(chat_id):
-    """
-    Send a message to a specific chat.
-    """
+    """send message to ai"""
     chat = chat_dal.find_one_chat({"_id": chat_id})
     if not chat:
         return jsonify({"error": "chat not found"}), 404

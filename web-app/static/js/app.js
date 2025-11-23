@@ -62,13 +62,13 @@ async function createNewChat() {
       created_at: new Date().toISOString(),
       messages: [],
     };
-    
+
     const response = await fetch(API_BASE, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
     });
-    
+
     if (response.ok) {
       const data = await response.json();
       currentChatId = data.inserted_id;
@@ -76,7 +76,10 @@ async function createNewChat() {
       showChatArea();
       loadChatHistory();
     } else {
-      showNotification(`Failed to create new chat: ${response.status}`, "error");
+      showNotification(
+        `Failed to create new chat: ${response.status}`,
+        "error"
+      );
     }
   } catch (error) {
     console.error("Error creating chat:", error);
@@ -93,9 +96,12 @@ function renderMarkdown(text) {
 
 marked.setOptions({
   highlight: (code, lang) => {
-    try { return hljs.highlight(code, { language: lang }).value; }
-    catch { return hljs.highlightAuto(code).value; }
-  }
+    try {
+      return hljs.highlight(code, { language: lang }).value;
+    } catch {
+      return hljs.highlightAuto(code).value;
+    }
+  },
 });
 
 async function loadChatHistory() {
@@ -109,7 +115,6 @@ async function loadChatHistory() {
     console.error("Error loading chats:", error);
   }
 }
-
 
 function displayChatList(chats) {
   chatList.innerHTML = "";
@@ -160,7 +165,6 @@ async function loadChat(chatId) {
   }
 }
 
-
 // Message Display
 function displayMessages(messages) {
   messagesContainer.innerHTML = "";
@@ -199,7 +203,8 @@ async function startRecording() {
 
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true });
+      audio: true,
+    });
     mediaRecorder = new MediaRecorder(stream);
     audioChunks = [];
 
@@ -251,27 +256,24 @@ async function transcribeAudio(audioBlob) {
   showNotification("Transcribing audio...", "info");
 
   try {
-    const res = await fetch ("/speech/api/transcribe", {
+    const res = await fetch("/speech/api/transcribe", {
       method: "POST",
       body: formData,
     });
 
-    if (res.ok){
+    if (res.ok) {
       const data = await res.json();
       return data.transcript;
-    }
-    else {
+    } else {
       console.log("Transcription failed", await res.text());
       showNotification("Failed to transcribe audio", "error");
       return null;
     }
-  }
-  catch (error){
+  } catch (error) {
     console.log("error cant transcribe : ", error);
     showNotification("Error sending audio for transcription", "error");
     return null;
   }
-
 }
 
 // Text Message Functions
@@ -282,7 +284,6 @@ async function sendTextMessage() {
   textInput.value = "";
   await sendMessage(message);
 }
-
 
 async function sendMessage(content) {
   // Create chat if needed
@@ -317,8 +318,7 @@ async function sendMessage(content) {
     if (response.ok) {
       // the backend now reutrns ai message directly
       const assistantMessage = await response.json();
-      addMessageToUI(assistantMessage)
-
+      addMessageToUI(assistantMessage);
     } else {
       throw new Error("Failed to send message");
     }
@@ -328,8 +328,6 @@ async function sendMessage(content) {
     showNotification("Failed to send message. Please try again.", "error");
   }
 }
-
-
 
 // UI Helper Functions
 function showChatArea() {
