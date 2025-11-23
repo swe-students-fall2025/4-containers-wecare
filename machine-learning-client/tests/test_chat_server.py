@@ -3,8 +3,8 @@ Tests for chat_server.py
 """
 
 import pytest
-from backend.routers.chat_server import chat_router
 from flask import Flask
+from backend.routers.chat_server import chat_router
 
 
 # flask app fixture
