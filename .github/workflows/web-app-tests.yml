@@ -12,15 +12,12 @@ jobs:
           python-version: '3.11'
       - name: Install pipenv
         run: python -m pip install --upgrade pip pipenv
-      - name: Install web-app dependencies
-        if: ${{ hashFiles('web-app/**') != '' }}
+
+      - name: Build and test ML-client
+        env:
+          TESTING: '1'
+          PYTHONPATH: ./web-app
         run: |
           cd web-app
           pipenv sync --dev --python $(which python)
-      - name: Run web-app tests
-        env:
-          TESTING: '1'
-          PYTHONPATH: ./machine-learning-client
-        run: |
-          # Run tests from repo root so `backend` package is importable
-          pytest -q web-app
+          pytest web-app
