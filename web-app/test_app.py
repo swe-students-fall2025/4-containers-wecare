@@ -9,6 +9,8 @@ import pytest
 from app import app as flask_app
 from app import db  # pylint: disable=unused-import
 
+# pylint: disable= redefined-outer-name
+
 
 @pytest.fixture
 def app():
@@ -20,6 +22,12 @@ def app():
         }
     )
     yield flask_app
+
+
+@pytest.fixture
+def client(app):
+    """create client for the tests."""
+    return app.test_client()
 
 
 def test_index_route(client):

@@ -11,6 +11,8 @@ requests = "*"
 openai = "*"
 flask = "*"
 pylint = "*"
+pytest = "*"
+pytest-cov = "*"
 
 [dev-packages]
 pytest = "*"
