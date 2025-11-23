@@ -6,19 +6,16 @@ It simulates MongoDB operations using in-memory data structures.
 from unittest.mock import MagicMock
 
 
-def fake_ask_model(messages):
+def fake_ask_model(messages):  # pylint: disable=unused-argument
     """
     fake implementation of ask_model that return a string
     """
     return "assistant reply"
 
 
-"""
-Fake collection class to simulate MongoDB collection operations.
-"""
-
-
 class FakeCollection:
+    """Fake collection class to simulate MongoDB collection operations."""
+
     def __init__(self):
         """
         Initialize an empty collection.
@@ -88,12 +85,9 @@ class FakeCollection:
         return MagicMock(deleted_count=deleted)
 
 
-"""
-Fake database class to hold fake collections.
-"""
+class FakeDB:  # pylint: disable= too-few-public-methods
+    """Fake database class to hold fake collections."""
 
-
-class FakeDB:
     def __init__(self):
         """
         Initialize the fake database with chats and messages collections.

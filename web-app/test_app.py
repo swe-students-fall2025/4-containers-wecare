@@ -173,7 +173,7 @@ def test_create_message(client, monkeypatch):
     assert response.status_code == 201
 
 
-def test_get_messages(client, monkeypatch):  # pylint: disable=unused-import
+def test_get_messages(client, monkeypatch):  # pylint: disable=unused-argument
     """Test getting messages from mongodb"""
 
     # Mock pymongo

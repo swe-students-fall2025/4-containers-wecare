@@ -1,6 +1,4 @@
-"""
-Data Access Layer (DAL) for MongoDB interactions.
-"""
+"""Data Access Layer (DAL) for MongoDB interactions."""  # pylint: disable=invalid-name
 
 import os
 
@@ -11,13 +9,19 @@ TESTING = os.environ.get("TESTING") == "1"
 
 if TESTING:
     # use the fake DAL for testing
-    from backend.fake_DAL import chat_dal, db, messages_dal
+
+    from backend.fake_DAL import (  # pylint: disable=import-error
+        chat_dal,
+        db,
+        messages_dal,
+    )
+
+    __all__ = ["chat_dal", "db", "messages_dal"]
 else:
 
     from dotenv import load_dotenv
     from pymongo import MongoClient
     from pymongo.errors import PyMongoError
-    from pymongo.server_api import ServerApi
 
     # Load environment variables from .env
     load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "../.env"))
@@ -52,12 +56,12 @@ else:
                 return ""
 
         @staticmethod
-        def find_one_chat(filter: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        def find_one_chat(query_filter: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             """
             find one chat document matching the filter.
             """
             try:
-                return db.chats.find_one(filter)
+                return db.chats.find_one(query_filter)
             except PyMongoError as e:
                 print(f"Error finding chat: {e}")
                 return None
@@ -75,25 +79,25 @@ else:
 
         @staticmethod
         def update_one_chat(
-            filter: Dict[str, Any], update_data: Dict[str, Any]
+            query_filter: Dict[str, Any], update_data: Dict[str, Any]
         ) -> bool:
             """
             update one chat document matching the filter.
             """
             try:
-                result = db.chats.update_one(filter, {"$set": update_data})
+                result = db.chats.update_one(query_filter, {"$set": update_data})
                 return result.modified_count > 0
             except PyMongoError as e:
                 print(f"Error updating chat: {e}")
                 return False
 
         @staticmethod
-        def delete_one_chat(filter: Dict[str, Any]) -> bool:
+        def delete_one_chat(query_filter: Dict[str, Any]) -> bool:
             """
             delete one chat document matching the filter.
             """
             try:
-                result = db.chats.delete_one(filter)
+                result = db.chats.delete_one(query_filter)
                 return result.deleted_count > 0
             except PyMongoError as e:
                 print(f"Error deleting chat: {e}")
@@ -117,12 +121,12 @@ else:
                 return ""
 
         @staticmethod
-        def find_one_message(filter: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        def find_one_message(query_filter: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             """
             find one message document matching the filter.
             """
             try:
-                return db.messages.find_one(filter)
+                return db.messages.find_one(query_filter)
             except PyMongoError as e:
                 print(f"Error finding message: {e}")
                 return None
@@ -140,25 +144,25 @@ else:
 
         @staticmethod
         def update_one_message(
-            filter: Dict[str, Any], update_data: Dict[str, Any]
+            query_filter: Dict[str, Any], update_data: Dict[str, Any]
         ) -> bool:
             """
             update one message document matching the filter.
             """
             try:
-                result = db.messages.update_one(filter, {"$set": update_data})
+                result = db.messages.update_one(query_filter, {"$set": update_data})
                 return result.modified_count > 0
             except PyMongoError as e:
                 print(f"Error updating message: {e}")
                 return False
 
         @staticmethod
-        def delete_one_message(filter: Dict[str, Any]) -> bool:
+        def delete_one_message(query_filter: Dict[str, Any]) -> bool:
             """
             delete one message document matching the filter.
             """
             try:
-                result = db.messages.delete_one(filter)
+                result = db.messages.delete_one(query_filter)
                 return result.deleted_count > 0
             except PyMongoError as e:
                 print(f"Error deleting message: {e}")

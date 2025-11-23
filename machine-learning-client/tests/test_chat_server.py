@@ -3,8 +3,8 @@ Tests for chat_server.py
 """
 
 import pytest
-from backend.routers.chat_server import chat_router
 from flask import Flask
+from backend.routers.chat_server import chat_router
 
 
 # flask app fixture
@@ -19,7 +19,7 @@ def client():
 
 
 # test cases for chat_server.py
-def test_create_chat(client):
+def test_create_chat(client):  # pylint: disable=redefined-outer-name
     """
     Create a new chat.
     """
@@ -28,7 +28,7 @@ def test_create_chat(client):
     assert "inserted_id" in resp.get_json()
 
 
-def test_get_chat(client):
+def test_get_chat(client):  # pylint: disable=redefined-outer-name
     """
     Get a specific chat by ID.
     """
@@ -37,7 +37,7 @@ def test_get_chat(client):
     assert resp.get_json()["_id"] == "123"
 
 
-def test_get_all_chats(client):
+def test_get_all_chats(client):  # pylint: disable=redefined-outer-name
     """
     get all chats.
     """
@@ -46,7 +46,7 @@ def test_get_all_chats(client):
     assert isinstance(resp.get_json(), list)
 
 
-def test_update_chat(client):
+def test_update_chat(client):  # pylint: disable=redefined-outer-name
     """
     update a specific chat by ID.
     """
@@ -55,7 +55,7 @@ def test_update_chat(client):
     assert resp.get_json()["chat"] == "chat updated successfully"
 
 
-def test_delete_chat(client):
+def test_delete_chat(client):  # pylint: disable=redefined-outer-name
     """
     delete a specific chat by ID.
     """
@@ -64,7 +64,7 @@ def test_delete_chat(client):
     assert resp.get_json()["chat"] == "chat deleted successfully"
 
 
-def test_send_message(client):
+def test_send_message(client):  # pylint: disable=redefined-outer-name
     """
     send a message to a specific chat.
     """

@@ -19,6 +19,10 @@ disable=
         # We have to ignore cases where variables are named 'id', 'list', etc.
         # This is common in database code and test code.
 
+    duplicate-code,
+        # We have to ignore because similar test setup code is used across multiple test files
+        # for mocking openapi clients and other common testing patterns.
+
 [MASTER]
 ignore=venv,env
     # Ignore local virtual environments that should never be linted.
