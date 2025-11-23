@@ -2,6 +2,14 @@
 Unit tests for the speech server
 """
 
+# pylint: disable=import-error
+# pylint: disable=import-outside-toplevel
+# pylint: disable=reimported
+# pylint: disable=redefined-outer-name
+
+# pylint: disable=duplicate-code
+
+
 import io
 import os
 import sys
@@ -23,12 +31,12 @@ def client():
     app.config["TESTING"] = True
     app.register_blueprint(speech_router)
 
-    with app.test_client() as client:
+    with app.test_client() as client:  # pylint: disable=redefined-outer-name
         yield client
 
 
 # test cases for speech_server.py
-def test_transcribe_fake(client):
+def test_transcribe_fake(client):  # pylint: disable=redefined-outer-name
     """
     Test fake transcription runs in TESTING mode
     """
@@ -46,7 +54,7 @@ def test_transcribe_fake(client):
     assert data["text"] == "FAKE_TRANSCRIPTION"
 
 
-def test_transcribe_missing_file(client):
+def test_transcribe_missing_file(client):  # pylint: disable=redefined-outer-name
     """
     Should return 400 error when no file is sent
     """
@@ -79,7 +87,9 @@ def test_transcribe_production_mode_error():
         else:
             import backend.routers.speech_server
 
-        from backend.routers.speech_server import speech_router
+        from backend.routers.speech_server import (
+            speech_router,
+        )  # pylint: disable=reimported, redefined-outer-name
 
         app = Flask(__name__)
         app.register_blueprint(speech_router)

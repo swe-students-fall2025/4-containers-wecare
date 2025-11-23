@@ -2,6 +2,9 @@
 Tests for model_client.py
 """
 
+# pylint: disable=duplicate-code
+
+
 import os
 import sys
 from unittest.mock import patch, MagicMock
@@ -14,13 +17,11 @@ def test_ask_model_testing_mode():
     with patch.dict(os.environ, {"TESTING": "1"}):
         # reload to pick up the env var
         if "backend.routers.model_client" in sys.modules:
-            import backend.routers.model_client
-
-            importlib.reload(backend.routers.model_client)
+            module = importlib.reload(sys.modules["backend.routers.model_client"])
         else:
-            import backend.routers.model_client
+            module = importlib.import_module("backend.routers.model_client")
 
-        from backend.routers.model_client import ask_model
+        ask_model = module.ask_model
 
         response = ask_model([])
         assert response == "FAKE_MODEL_RESPONSE"
@@ -32,7 +33,7 @@ def test_ask_model_production_mode_error():
         os.environ, {"TESTING": "0", "OPENAI_API_KEY": "SK_fake-key"}
     ), patch(
         "openai.OpenAI"
-    ) as MockOpenAI:  # pylint: disable=nvalid-name
+    ) as MockOpenAI:  # pylint: disable=invalid-name
 
         mock_client_instance = MagicMock()
         MockOpenAI.return_value = mock_client_instance
@@ -43,13 +44,11 @@ def test_ask_model_production_mode_error():
         )
 
         if "backend.routers.model_client" in sys.modules:
-            import backend.routers.model_client
-
-            importlib.reload(backend.routers.model_client)
+            module = importlib.reload(sys.modules["backend.routers.model_client"])
         else:
-            import backend.routers.model_client
+            module = importlib.import_module("backend.routers.model_client")
 
-        from backend.routers.model_client import ask_model
+        ask_model = module.ask_model
 
         response = ask_model([{"role": "user", "content": "hello"}])
         assert "Sorry, ai is not working right now" in response
