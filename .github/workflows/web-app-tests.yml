@@ -13,11 +13,11 @@ jobs:
       - name: Install pipenv
         run: python -m pip install --upgrade pip pipenv pytest
 
-      - name: Build and test ML-client
+      - name: Build and test web-app
         env:
           TESTING: '1'
           PYTHONPATH: ./web-app
         run: |
           cd web-app
           pipenv sync --dev --python $(which python)
-          pytest web-app
+          pipenv run pytest test_app.py

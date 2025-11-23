@@ -20,4 +20,4 @@ jobs:
         run: |
           cd machine-learning-client
           pipenv sync --dev --python $(which python)
-          pytest machine-learning-client
+          pipenv run pytest ../tests/
