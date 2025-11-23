@@ -11,12 +11,13 @@ os.environ["TESTING"] = "1"
 os.environ["MONGO_URI"] = "fake"
 os.environ["MONGO_DB"] = "fake"
 
-#make sure we can import the backend modules
+# make sure we can import the backend modules
 ROOT = os.path.abspath(os.path.dirname(__file__))
 ML_CLIENT = os.path.join(ROOT, "machine-learning-client")
 
 sys.path.insert(0, ML_CLIENT)
 sys.path.insert(0, ROOT)
+
 
 # import fake backend components
 from tests.fake_backend import FakeDB, fake_ask_model

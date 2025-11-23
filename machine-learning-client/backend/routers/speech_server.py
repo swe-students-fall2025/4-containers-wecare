@@ -71,12 +71,12 @@ else:
                 )
 
             return jsonify({"transcript": transcript_text})
-        except Exception as e: # pylint: disable=broad-exception-caught
+        except Exception as e:  # pylint: disable=broad-exception-caught
             return jsonify({"error": f"failed to transcribe audio: {str(e)}"}), 500
         finally:
             # clean up temp file
             if temp_path and os.path.exists(temp_path):
                 try:
                     os.remove(temp_path)
-                except Exception as e: # pylint: disable=broad-exception-caught
+                except Exception as e:  # pylint: disable=broad-exception-caught
                     print(f"could not remove temp file {temp_path}: {e}")

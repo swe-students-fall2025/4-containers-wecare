@@ -10,8 +10,8 @@ TESTING = os.environ.get("TESTING") == "1"
 
 if TESTING:
     # Fake model for ALL tests
-    def ask_model(messages): # pylint: disable=unused-argument
-        """ fak model response"""
+    def ask_model(messages):  # pylint: disable=unused-argument
+        """fak model response"""
         return "FAKE_MODEL_RESPONSE"
 
 else:
@@ -39,6 +39,6 @@ else:
                 temperature=MODEL_TEMPERATURE,
             )
             return response.choices[0].message.content.strip()
-        except Exception as e: # pylint: disable=broad-exception-caught
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"There was an error getting ai response: {e}")
             return "Sorry, ai is not working right now. Try later!"
