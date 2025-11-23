@@ -9,6 +9,9 @@ black = "*"
 tomli = "*"
 openai = "*"
 python-dotenv = "*"
+flask = "*"
+pytest = "*"
+pytest-cov = "*"
 
 [dev-packages]
 
