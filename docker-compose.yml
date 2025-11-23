@@ -21,8 +21,11 @@ services:
       - ./machine-learning-client:/app
     ports:
       - "5051:5050"
+    env_file:
+      - .env
     environment:
       MONGO_URI: "mongodb://root:example@mongodb:27017/"
+      MONGO_DB: "mydatabase"
     
   web-app:
     build:
@@ -33,6 +36,8 @@ services:
       - .env
     environment:
       - MONGO_URI=mongodb://root:example@mongodb:27017/
+      - ML_CLIENT_HOST=machine-learning-client
+      - ML_CLIENT_PORT=5050
     depends_on:
       - mongo
     ports:
