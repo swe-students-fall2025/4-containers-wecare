@@ -12,6 +12,7 @@ python-dotenv = "*"
 flask = "*"
 pytest = "*"
 pytest-cov = "*"
+flask-cors = "*"
 
 [dev-packages]
 

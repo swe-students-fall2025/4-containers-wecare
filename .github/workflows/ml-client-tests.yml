@@ -1,4 +1,4 @@
-name: ml-client-tests
+name: CI ml-client-tests and coverage
 on: [push, pull_request]
 
 jobs:
