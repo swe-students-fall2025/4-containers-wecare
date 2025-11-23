@@ -57,25 +57,30 @@ function setupEventListeners() {
 // Chat Management
 async function createNewChat() {
   try {
+    const requestBody = {
+      title: "New Conversation",
+      created_at: new Date().toISOString(),
+      messages: [],
+    };
+    
     const response = await fetch(API_BASE, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: "New Conversation",
-        created_at: new Date().toISOString(),
-        messages: [],
-      }),
+      body: JSON.stringify(requestBody),
     });
-
+    
     if (response.ok) {
       const data = await response.json();
       currentChatId = data.inserted_id;
+      messagesContainer.innerHTML = ""; // clear messages for new chat
       showChatArea();
       loadChatHistory();
+    } else {
+      showNotification(`Failed to create new chat: ${response.status}`, "error");
     }
   } catch (error) {
     console.error("Error creating chat:", error);
-    showNotification("Failed to create new chat", "error");
+    showNotification(`Failed to create new chat: ${error.message}`, "error");
   }
 }
 
