@@ -8,6 +8,7 @@ messages_router = Blueprint("messages", __name__, url_prefix="/messages/api")
 
 @messages_router.post("")
 def create_message():
+    """ create meassge and add it """
     message_data = request.json
     message_data["_id"] = str(uuid4())
     inserted_id = messages_dal.insert_one_message(message_data)
@@ -18,6 +19,7 @@ def create_message():
 
 @messages_router.get("/<message_id>")
 def get_message(message_id):
+    """ get message from id"""
     if not message_id:
         return jsonify({"error": "message_id query parameter is required"}), 400
     message = messages_dal.find_one_message({"_id": message_id})
@@ -28,6 +30,7 @@ def get_message(message_id):
 
 @messages_router.get("/")
 def get_all_messages():
+    """ get all messages """
     message = messages_dal.find_all_messages()
     if message:
         return jsonify(message), 200
@@ -36,6 +39,7 @@ def get_all_messages():
 
 @messages_router.put("/<message_id>")
 def update_message(message_id):
+    """ update message given id (not imp atm)"""
     update_data = request.json
     success = messages_dal.update_one_message({"_id": message_id}, update_data)
     if success:
@@ -45,6 +49,7 @@ def update_message(message_id):
 
 @messages_router.delete("/<message_id>")
 def delete_message(message_id):
+    """ delete a message given id"""
     success = messages_dal.delete_one_message({"_id": message_id})
     if success:
         return jsonify({"message": "Message deleted successfully"}), 200

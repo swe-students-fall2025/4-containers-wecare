@@ -1,6 +1,7 @@
 FROM python:3.10-slim
 
 WORKDIR /app
+
 # Install pipenv
 RUN pip install pipenv
 COPY Pipfile Pipfile.lock ./
@@ -12,5 +13,5 @@ COPY . .
 
 EXPOSE 5050
 
-# Run the Flask application
+# runn the app
 CMD ["pipenv", "run", "python", "app.py"]

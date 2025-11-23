@@ -62,7 +62,8 @@ def proxy_request(target_url):
             headers={key: value for (key, value) in request.headers if key != 'Host'},
             data=request.get_data(),
             cookies=request.cookies,
-            allow_redirects=False)
+            allow_redirects=False,
+            timeout=10)
 
         excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
         headers = [(name, value) for (name, value) in resp.raw.headers.items()

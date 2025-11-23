@@ -29,10 +29,12 @@ else:
     client.admin.command("ping")
     db = client.get_database(DB_NAME)
 
-    # Chats: one document per conversation
+    
     class chat_dal:
+        """ Chats: one document per conversation"""
         @staticmethod
         def insert_one_chat(chat_data: Dict[str, Any]) -> str:
+            """ insert one chaat"""
             try:
                 result = db.chats.insert_one(chat_data)
                 return str(result.inserted_id)
