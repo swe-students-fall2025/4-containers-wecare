@@ -2,6 +2,10 @@
 Main application file for the web app.
 """
 
+import os
+import sys
+import requests
+
 from flask_cors import CORS
 from flask import (
     Flask,
@@ -11,9 +15,6 @@ from flask import (
     request,
     Response,
 )
-import requests
-import os
-import sys
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
