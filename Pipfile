@@ -4,11 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pylint = "*"
 black = "*"
-tomli = "*"
-openai = "*"
-python-dotenv = "*"
+pylint = "*"
 
 [dev-packages]
 

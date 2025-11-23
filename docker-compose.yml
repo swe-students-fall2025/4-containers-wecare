@@ -21,21 +21,25 @@ services:
       - ./machine-learning-client:/app
     ports:
       - "5051:5050"
-    environment:
-      MONGO_URI: "mongodb://root:example@mongodb:27017/"
-    
-  chat-client:
-    build:
-      context: .
-      dockerfile: web-app/Dockerfile
-    container_name: chat-client
     env_file:
       - .env
     environment:
-      - MODEL_NAME=${MODEL_NAME}
-      - MODEL_MAX_NEW_TOKENS=${MODEL_MAX_NEW_TOKENS}
-      - MODEL_TEMPERATURE=${MODEL_TEMPERATURE}
-    command: ["python", "web-app/app.py"]
+      MONGO_URI: "mongodb://root:example@mongodb:27017/"
+      MONGO_DB: "mydatabase"
+    
+  web-app:
+    build:
+      context: ./web-app
+      dockerfile: Dockerfile
+    container_name: web-app
+    env_file:
+      - .env
+    environment:
+      - MONGO_URI=mongodb://root:example@mongodb:27017/
+      - ML_CLIENT_HOST=machine-learning-client
+      - ML_CLIENT_PORT=5050
+    depends_on:
+      - mongo
     ports:
       - "5050:5050"
 
