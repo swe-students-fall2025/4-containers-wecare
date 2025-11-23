@@ -1,3 +1,7 @@
+"""
+Main application file for the web app.
+"""
+
 from flask_cors import CORS
 from flask import Flask, render_template, send_from_directory, jsonify, request, Response
 import requests
